@@ -4,7 +4,7 @@
 #include <stdbool.h>
 
 #define MAX_LINE_LENGTH 1024
-#define MAX_FIELDS 100
+#define MAX_FIELDS 8
 
 void count_fields(const char *filename) {
     FILE *file = fopen(filename, "r");
@@ -40,22 +40,34 @@ void count_records(const char *filename, bool has_header) {
 }
 
 void parse_header(const char *filename, char header[MAX_FIELDS][MAX_LINE_LENGTH], int *num_fields) {
+    // Open the CSV file for reading
     FILE *file = fopen(filename, "r");
-    if (!file) {
+    if (!file) { // Check if file opening failed
         perror("Error opening file");
         exit(EXIT_FAILURE);
     }
-    char line[MAX_LINE_LENGTH];
+
+    char line[MAX_LINE_LENGTH]; // Buffer to store the first line (header row)
+
+    // Read the first line (header row) from the file
     if (fgets(line, sizeof(line), file)) {
-        *num_fields = 0;
-        char *token = strtok(line, ",\n");
-        while (token) {
-            strncpy(header[*num_fields], token, MAX_LINE_LENGTH);
-            (*num_fields)++;
-            token = strtok(NULL, ",\n");
+        *num_fields = 0; // Initialize the number of fields to 0
+
+        // Tokenize the first line using "," and "\n" as delimiters
+        char *field = strtok(line, ",\n");
+        
+        while (field) { // Loop through each field in the header row
+            // Copy the field into the header array (avoiding buffer overflow)
+            strncpy(header[*num_fields], field, MAX_LINE_LENGTH);
+            
+            (*num_fields)++; // Increment field count
+            
+            // Get the next field
+            field = strtok(NULL, ",\n");
         }
     }
-    fclose(file);
+
+    fclose(file); // Close the file
 }
 
 int main(int argc, char *argv[]) {
