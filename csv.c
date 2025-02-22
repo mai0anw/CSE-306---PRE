@@ -331,21 +331,29 @@ int main(int argc, char *argv[]) {
             count_fields(filename);
         } else if (strcmp(argv[i], "-r") == 0) {
             count_records(filename, has_header);
-        } else if (strcmp(argv[i], "-min") == 0){
-            if (i + 1 < argc && argv[i + 1][0] != '-') { // checks next flag and that it does not start with "-"
-                field_name = argv[i + 1];  // Use the field name provided after -min
-                //field_index = parse_header(filename, )
-                // = get_field_index(filename, field_name);  // Get field index from header
-                if (field_index == -1) {
-                    fprintf(stderr, "Error: Field '%s' not found in header\n", field_name);
+        } else if (strcmp(argv[i], "-min") == 0) {
+            if (i + 1 < argc && argv[i + 1][0] != '-') { // check next argument and ensure it's not a flag
+                field_name = argv[i + 1];  // use the field name provided after -min
+                
+                if (has_header) { // check if there's a header to parse
+                    field_index = parse_header(filename, field_name, &num_fields);  // get field index using header parsing
+                    if (field_index == -1) {
+                        fprintf(stderr, "Error: Field '%s' not found in header\n", field_name);
+                        return EXIT_FAILURE;
+                    }
+                } else {
+                    // if there's no header, the user should pass an index directly
+                    fprintf(stderr, "Error: Field name provided, but no header exists.\n");
                     return EXIT_FAILURE;
                 }
-                i++;  // Skip the field name argument
+
+                i++;  // skip the field name argument in argument list
             } else if (i + 1 < argc) {
-                field_index = atoi(argv[i + 1]);  // Use field index if no field name is provided
+                field_index = atoi(argv[i + 1]);  // use field index if no field name is provided
             }
             min_field(field_index, filename, has_header);
         }
+
     }
     
     return EXIT_SUCCESS;
