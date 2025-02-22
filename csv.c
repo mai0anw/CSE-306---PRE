@@ -57,7 +57,7 @@ char process_quoted_field(char *field) {
 
 }
 
-int min_field(int field_index, const char *field_name, const char *filename, int has_header) {
+int min_field(int field_index, const char *filename, int has_header) {
     FILE *file = fopen(filename, "r");  // Open the file for reading
     if (file == NULL) {
         fprintf(stderr, "Error: Unable to open file %s\n", filename);
@@ -131,7 +131,7 @@ int min_field(int field_index, const char *field_name, const char *filename, int
     return min_value;
 }
 
-int max_field(int field_index, const char *field_name, const char *filename, int has_header) {
+int max_field(int field_index, const char *filename, int has_header) {
     FILE *file = fopen(filename, "r");  // Open the file for reading
     if (file == NULL) {
         fprintf(stderr, "Error: Unable to open file %s\n", filename);
@@ -203,7 +203,7 @@ int max_field(int field_index, const char *field_name, const char *filename, int
 }
 
 
-double mean_field(int field_index, const char *field_name, const char *filename, int has_header) {
+double mean_field(int field_index, const char *filename, int has_header) {
     FILE *file = fopen(filename, "r");  // Open the file for reading
     if (file == NULL) {
         fprintf(stderr, "Error: Unable to open file %s\n", filename);
