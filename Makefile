@@ -6,7 +6,7 @@ OBJS = $(SRCS:.c=.o)
 
 # Criterion Test Variables
 TEST_TARGET = test_csv
-TEST_SRCS = test_csv.c
+TEST_SRCS = tests.c
 TEST_OBJS = $(TEST_SRCS:.c=.o)
 CRITERION_FLAGS = `pkg-config --cflags --libs criterion`
 
