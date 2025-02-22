@@ -57,7 +57,7 @@ char process_quoted_field(char *field) {
 
 }
 
-int min_field(int field_index, const char *filename, int has_header) {
+int min_field(int field_index, const char *filename) {
     FILE *file = fopen(filename, "r");  // Open the file for reading
     if (file == NULL) {
         fprintf(stderr, "Error: Unable to open file %s\n", filename);
@@ -70,14 +70,13 @@ int min_field(int field_index, const char *filename, int has_header) {
     int valid_int = 0;              // flag to determine if the data is valid
 
 
-    // skips the header line if has_header is 1
-    if (has_header) {
-        if (fgets(line, sizeof(line), file) == NULL) {
-            fprintf(stderr, "Error: File is empty or unable to read header\n");
-            fclose(file);
-            return EXIT_FAILURE;
-        }
+    // skips the header line
+    if (fgets(line, sizeof(line), file) == NULL) {
+        fprintf(stderr, "Error: File is empty or unable to read header\n");
+        fclose(file);
+        return EXIT_FAILURE;
     }
+
 
     // needs to read the csv lines from the input
     while (fgets(line, sizeof(line), file)){       // reads lines
@@ -131,7 +130,7 @@ int min_field(int field_index, const char *filename, int has_header) {
     return min_value;
 }
 
-int max_field(int field_index, const char *filename, int has_header) {
+int max_field(int field_index, const char *filename) {
     FILE *file = fopen(filename, "r");  // Open the file for reading
     if (file == NULL) {
         fprintf(stderr, "Error: Unable to open file %s\n", filename);
@@ -142,13 +141,11 @@ int max_field(int field_index, const char *filename, int has_header) {
     int max_value = INT_MIN;        // max value to neg inf
     int valid_int = 0;              // flag to determine if the data is valid
 
-    // skips the header line if has_header is 1
-    if (has_header) {
-        if (fgets(line, sizeof(line), file) == NULL) {
-            fprintf(stderr, "Error: File is empty or unable to read header\n");
-            fclose(file);
-            return EXIT_FAILURE;
-        }
+    // skips the header line
+    if (fgets(line, sizeof(line), file) == NULL) {
+        fprintf(stderr, "Error: File is empty or unable to read header\n");
+        fclose(file);
+        return EXIT_FAILURE;
     }
 
     // needs to read the csv lines from the input
@@ -203,7 +200,7 @@ int max_field(int field_index, const char *filename, int has_header) {
 }
 
 
-double mean_field(int field_index, const char *filename, int has_header) {
+double mean_field(int field_index, const char *filename) {
     FILE *file = fopen(filename, "r");  // Open the file for reading
     if (file == NULL) {
         fprintf(stderr, "Error: Unable to open file %s\n", filename);
@@ -217,13 +214,12 @@ double mean_field(int field_index, const char *filename, int has_header) {
     int count = 0;
 
     // skips the header line if has_header is 1
-    if (has_header) {
-        if (fgets(line, sizeof(line), file) == NULL) {
-            fprintf(stderr, "Error: File is empty or unable to read header\n");
-            fclose(file);
-            return EXIT_FAILURE;
-        }
+    if (fgets(line, sizeof(line), file) == NULL) {
+        fprintf(stderr, "Error: File is empty or unable to read header\n");
+        fclose(file);
+        return EXIT_FAILURE;
     }
+    
 
     // needs to read the csv lines from the input
     while (fgets(line, sizeof(line), file)){       // reads lines
