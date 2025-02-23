@@ -56,7 +56,22 @@ int main(int argc, char *argv[]) {
         } else if (strcmp(argv[i], "-r") == 0) {
             count_records(filename, has_header);
         }
+
+
+        if (strcmp(argv[i], "-records") == 0 && argc == 5){
+            int field_index = atoi(argv[3]);
+            char *value = argv[4];
+
+            while (fgets(line, Max_lne, file)){
+
+            }    
+        }
+
+
+
+
     }
+
     
     return 0;
 }
