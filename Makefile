@@ -1,4 +1,4 @@
-# OS identification
+# OS identification from: https://stackoverflow.com/questions/714100/os-detecting-makefile
 OS := $(shell uname -s)
 
 ifeq ($(OS), Darwin)
@@ -20,18 +20,18 @@ OBJECTS := csv.o tests.o
 # Default target: Build the tests
 all: tests
 
-# Compile csv.o from csv.c
+# Compile code.o from csv.c
 csv.o: csv.c csv.h
-    $(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
-# Compile tests.o from test_csv.c
-tests.o: test_csv.c csv.h
-    $(CC) $(CFLAGS) -I $(INCLUDE_PATH) -c $< -o $@
+# Compile tests.o from tests.c
+tests.o: tests.c csv.h
+	$(CC) $(CFLAGS) -I $(INCLUDE_PATH) -c $< -o $@
 
 # Link object files and build the tests executable
 tests: $(OBJECTS)
-    $(CC) $(CFLAGS) -L $(LIB_PATH) -I $(INCLUDE_PATH) -o tests $(OBJECTS) -lcriterion
+	$(CC) $(CFLAGS) -L $(LIB_PATH) -I $(INCLUDE_PATH) -o tests $(OBJECTS) -lcriterion
 
 # Clean build artifacts
 clean:
-    rm -f *~ $(OBJECTS) tests
+	rm -f *~ $(OBJECTS) tests
