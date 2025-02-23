@@ -310,12 +310,12 @@ int parse_field_name(const char *field_name, char header[MAX_FIELDS][MAX_LINE_LE
 }
 
 int main(int argc, char *argv[]) {
-    if (argc < 3) {
+    if (argc < 1) {
         fprintf(stderr, "Usage: %s [-f | -r] <filename>\n", argv[0]);
         return EXIT_FAILURE;
     }
 
-    printf("Hi mom");
+    printf("Hi mom\n");
     
     const char *filename = argv[argc - 1];
 
@@ -327,9 +327,9 @@ int main(int argc, char *argv[]) {
     parse_header(filename, header, num_fields);
     
     for (int i = 1; i < argc - 1; i++) {
-        printf("Test 1");
+        printf("Test 1\n");
         if (strcmp(argv[i], "-f") == 0) {
-            printf("Test 2");
+            printf("Test 2\n");
             count_fields(filename);
         } else if (strcmp(argv[i], "-r") == 0) {
             count_records(filename);
