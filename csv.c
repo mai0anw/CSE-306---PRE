@@ -314,6 +314,8 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "Usage: %s [-f | -r] <filename>\n", argv[0]);
         return EXIT_FAILURE;
     }
+
+    printf("Hi mom");
     
     const char *filename = argv[argc - 1];
 
@@ -324,58 +326,62 @@ int main(int argc, char *argv[]) {
 
     parse_header(filename, header, num_fields);
     
-    if (strcmp(argv[1], "-f") == 0) {
-        count_fields(filename);
-    } else if (strcmp(argv[1], "-r") == 0) {
-        count_records(filename);
-    } else if (strcmp(argv[1], "-h") == 0) {
+    for (int i = 1; i < argc - 1; i++) {
+        printf("Test 1");
+        if (strcmp(argv[i], "-f") == 0) {
+            printf("Test 2");
+            count_fields(filename);
+        } else if (strcmp(argv[i], "-r") == 0) {
+            count_records(filename);
+        } else if (strcmp(argv[i], "-h") == 0) {
 
-        if (strcmp(argv[2], "-min") == 0) {
-            field_name = argv[3];  // use the field name provided after -min
-            field_index = parse_field_name(field_name, header, num_fields);
+            if (strcmp(argv[i + 1], "-min") == 0) {
+                field_name = argv[i + 1];  // use the field name provided after -min
+                field_index = parse_field_name(field_name, header, num_fields);
 
-            if (field_index == -1) {
-                fprintf(stderr, "Error: Field '%s' not found in header\n", field_name);
-                return EXIT_FAILURE;
+                if (field_index == -1) {
+                    fprintf(stderr, "Error: Field '%s' not found in header\n", field_name);
+                    return EXIT_FAILURE;
+                }
+                
+                min_field(field_index, filename);
             }
-            
-            min_field(field_index, filename);
-        }
 
-        else if (strcmp(argv[3], "-max") == 0) {
-            field_name = argv[4];  // use the field name provided after -min
-            field_index = parse_field_name(field_name, header, num_fields);
+            else if (strcmp(argv[i + 1], "-max") == 0) {
+                field_name = argv[i + 1];  // use the field name provided after -min
+                field_index = parse_field_name(field_name, header, num_fields);
 
-            if (field_index == -1) {
-                fprintf(stderr, "Error: Field '%s' not found in header\n", field_name);
-                return EXIT_FAILURE;
+                if (field_index == -1) {
+                    fprintf(stderr, "Error: Field '%s' not found in header\n", field_name);
+                    return EXIT_FAILURE;
+                }
+                
+                max_field(field_index, filename);
             }
-            
-            max_field(field_index, filename);
-        }
 
-        else if (strcmp(argv[3], "-mean") == 0) {
-            field_name = argv[4];  // use the field name provided after -min
-            field_index = parse_field_name(field_name, header, num_fields);
+            else if (strcmp(argv[i + 1], "-mean") == 0) {
+                field_name = argv[i + 1];  // use the field name provided after -min
+                field_index = parse_field_name(field_name, header, num_fields);
 
-            if (field_index == -1) {
-                fprintf(stderr, "Error: Field '%s' not found in header\n", field_name);
-                return EXIT_FAILURE;
+                if (field_index == -1) {
+                    fprintf(stderr, "Error: Field '%s' not found in header\n", field_name);
+                    return EXIT_FAILURE;
+                }
+                
+                mean_field(field_index, filename);
             }
-            
-            mean_field(field_index, filename);
+        } else if (strcmp(argv[i], "-min") == 0) {
+            int conversion = atoi(argv[i + 1]);
+            min_field(conversion, filename);
+        } else if (strcmp(argv[i], "-max") == 0) {
+            int conversion = atoi(argv[i + 1]);
+            max_field(conversion, filename);
+        } else if (strcmp(argv[i], "-mean") == 0) {
+            int conversion = atoi(argv[i + 1]);
+            mean_field(conversion, filename);
+        } else {
+            return EXIT_FAILURE;
         }
-    } else if (strcmp(argv[2], "-min") == 0) {
-        int conversion = atoi(argv[3]);
-        min_field(conversion, filename);
-    } else if (strcmp(argv[2], "-max") == 0) {
-        int conversion = atoi(argv[3]);
-        max_field(conversion, filename);
-    } else if (strcmp(argv[2], "-mean") == 0) {
-        int conversion = atoi(argv[3]);
-        mean_field(conversion, filename);
-    } else {
-        return EXIT_FAILURE;
     }
     
     return EXIT_SUCCESS;
