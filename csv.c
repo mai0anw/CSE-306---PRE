@@ -218,7 +218,6 @@ double max_field(int field_index, const char *filename) {
 
                 // sscanf turns "100" (string) -> 100 (int) and store that into curr_value
                 if (sscanf(processed_field, "%d", &curr_value) == 1) {
-                    printf("%d\n", curr_value);
                     // after successful conversion, determine the min value
                     if(curr_value > max_value) {
                         max_value = curr_value;  // keep track of the min value
@@ -251,7 +250,7 @@ double max_field(int field_index, const char *filename) {
 
     // Calculate and return the mean
     
-    printf("Max_value: %d", max_value);
+    printf("Max_value: %d\n", max_value);
     return max_value;
 }
 
