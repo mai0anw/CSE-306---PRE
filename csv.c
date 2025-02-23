@@ -315,7 +315,6 @@ int main(int argc, char *argv[]) {
         return EXIT_FAILURE;
     }
     
-    bool has_header = false;
     const char *filename = argv[argc - 1];
 
     int field_index = -1;
@@ -368,11 +367,11 @@ int main(int argc, char *argv[]) {
                 mean_field(field_index, filename);
             }
         } else if (strcmp(argv[i], "-min") == 0) {
-            min_field(filename, argv[i + 1]);
+            min_field(argv[i + 1], filename);
         } else if (strcmp(argv[i], "-max") == 0) {
-            max_field(filename, argv[i + 1]);
+            max_field(argv[i + 1], filename);
         } else if (strcmp(argv[i], "-mean") == 0) {
-            mean_field(filename, argv[i + 1]);
+            mean_field(argv[i + 1], filename);
         } else {
             return EXIT_FAILURE;
         }
