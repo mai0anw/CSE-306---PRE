@@ -7,6 +7,12 @@ void redirect_stdout(void) {
     cr_redirect_stdout();
 }
 
+Test(sample_test, test_name) {
+    printf("Test is running...\n");
+    cr_assert_eq(1, 1, "Should pass");
+}
+
+
 // Test for "csv -f 05020004-eng.csv"
 Test(csv_tests, test_field_count, .init = redirect_stdout) {
     // Run csv program and redirect output to a temporary file
