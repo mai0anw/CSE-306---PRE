@@ -492,7 +492,7 @@ int main(int argc, char *argv[]) {
             count_fields(filename);
         } else if (strcmp(argv[i], "-r") == 0) {
             count_records(filename);
-        } else if (strcmp(argv[i], "-min") == 0) {  // if -min and there is an argument after it
+        } else if (strcmp(argv[i], "-min") == 0 && i + 1 < argc) {  // if -min and there is an argument after it
             field_index = h_flag ? parse_field_name(argv[i + 1], header, &num_fields) : atoi(argv[i + 1]);
             // if (h_flag) {
             //     field_index = parse_field_name(argv[i + 1], header, &num_fields);
@@ -506,7 +506,7 @@ int main(int argc, char *argv[]) {
             }
             printf("Minimum value for field %s: ", argv[i + 1]);
             min_field(field_index, filename);
-        } else if (strcmp(argv[i], "-max") == 0) {
+        } else if (strcmp(argv[i], "-max") == 0 && i + 1 < argc) {
             field_index = h_flag ? parse_field_name(argv[i + 1], header, &num_fields) : atoi(argv[i + 1]);
             // if (h_flag) {
             //     field_index = parse_field_name(argv[i + 1], header, &num_fields);
@@ -520,7 +520,7 @@ int main(int argc, char *argv[]) {
             }
             printf("Maximum value for field %s: ", argv[i + 1]);
             max_field(field_index, filename);
-        } else if (strcmp(argv[i], "-mean") == 0) { // do we need this:  && i + 1 < argc
+        } else if (strcmp(argv[i], "-mean") == 0 && i + 1 < argc) { // do we need this:  && i + 1 < argc
             field_index = h_flag ? parse_field_name(argv[i + 1], header, &num_fields) : atoi(argv[i + 1]);
             // if (h_flag) {
             //     field_index = parse_field_name(argv[i + 1], header, &num_fields);
