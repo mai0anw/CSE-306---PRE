@@ -14,7 +14,6 @@ int count_fields(const char *filename) {
         exit(EXIT_FAILURE);
     }
     char line[MAX_LINE_LENGTH];
-    int count;
     if (fgets(line, sizeof(line), file)) {
         count = 1;
         for (char *ptr = line; *ptr; ptr++) {
@@ -23,7 +22,6 @@ int count_fields(const char *filename) {
         printf("%d\n", count);
     }
     fclose(file);
-    return count;
 }
 
 void count_records(const char *filename) {
