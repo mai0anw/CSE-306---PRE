@@ -534,8 +534,6 @@ int main(int argc, char *argv[]) {
             }
             printf("Mean value for field %s: ", argv[i + 1]);
             mean_field(field_index, filename);
-        } else {
-            return EXIT_FAILURE;
         }
     }
 
