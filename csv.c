@@ -20,9 +20,9 @@ int count_fields(const char *filename) {
             if (*ptr == ',') count++;
         }
         printf("%d\n", count);
-        return count;
     }
     fclose(file);
+    return count;
 }
 
 void count_records(const char *filename) {
