@@ -1,2 +1,4 @@
 DATE, UBIT, DURATION, ACTIVITY & TOOL DESCRIPTION
 2025/02/22, louiszen, 5 minutes, added activity log for louiszen
+2025/02/22, louiszen, 4 hours, wrote the min_field, max_field, and mean_field helper functions using nano on my terminal
+2025/02/22, louiszen, 2 hours, helped make the main function's logic for my functions and how it interacts with the -h flag
