@@ -221,7 +221,7 @@ double mean_field(int field_index, const char *filename) {
     while (fgets(line, sizeof(line), file)){       // reads lines
         char *field;        // pointer to store each field
         int curr_column = 0;     // holds the current column value
-        int curr_value;          // stores the converted integer value
+        double curr_value;          // stores the converted integer value
 
         // split the field by comma or newline
         field = strtok(line, ",\n");
