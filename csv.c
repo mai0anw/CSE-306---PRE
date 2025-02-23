@@ -322,7 +322,7 @@ int main(int argc, char *argv[]) {
     int field_index = -1;
     char *field_name = NULL;
     char header[MAX_FIELDS][MAX_LINE_LENGTH];
-    int *num_fields = 0;
+    int num_fields = 0;
 
     parse_header(filename, header, num_fields);
     
