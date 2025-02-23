@@ -263,9 +263,9 @@ double mean_field(int field_index, const char *filename) {
 
     //otherwise returns the means
     double mean = sum/count;
-    printf("%d\n", sum);
+    printf("%f\n", sum);
     printf("%d\n", count);
-    printf("%d\n", mean);
+    printf("%f\n", mean);
     return mean;
 
 }
