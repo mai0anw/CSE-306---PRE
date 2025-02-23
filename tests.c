@@ -2,9 +2,9 @@
 #include "csv.h" // Include the header of your csv.c file
 
 
-int runTest_count_fields(const char *filename, int expected) {
-    int actual = count_fields(filename);
-    cr_assert_eq( actual, expected, "count_fields(\"%s\") should have produced \"%d\", but returned \"%d\" instead.\n", filename, expected, actual);
+int runTest_min_fields(int field_index, const char *filename, int expected) {
+    int actual = min_fields(field_index, filename);
+    cr_assert_eq(actual, expected, "count_fields(\"%s\") should have produced \"%d\", but returned \"%d\" instead.\n", filename, expected, actual);
 
 }
 
