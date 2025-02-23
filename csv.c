@@ -39,7 +39,7 @@ void count_records(const char *filename) {
     fclose(file);
 }
 
-char process_quoted_field(char *field) {
+char* process_quoted_field(char *field) {
     int len = strlen(field);
 
     // if the field has quotes around it at the beginning and end
