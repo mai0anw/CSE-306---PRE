@@ -367,11 +367,14 @@ int main(int argc, char *argv[]) {
                 mean_field(field_index, filename);
             }
         } else if (strcmp(argv[i], "-min") == 0) {
-            min_field(argv[i + 1], filename);
+            int integerized = (argv[i + 1]) - '0';
+            min_field(integerized, filename);
         } else if (strcmp(argv[i], "-max") == 0) {
-            max_field(argv[i + 1], filename);
+            int integerized = (argv[i + 1]) - '0';
+            max_field(integerized, filename);
         } else if (strcmp(argv[i], "-mean") == 0) {
-            mean_field(argv[i + 1], filename);
+            int integerized = (argv[i + 1]) - '0';
+            mean_field(integerized, filename);
         } else {
             return EXIT_FAILURE;
         }
