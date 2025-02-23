@@ -104,18 +104,20 @@ char* process_quoted_field(char *field) {
 
 }
 
-int min_field(int field_index, const char *filename) {
+//updated MIN
+int max_field(int field_index, const char *filename) {
     FILE *file = fopen(filename, "r");  // Open the file for reading
     if (file == NULL) {
         fprintf(stderr, "Error: Unable to open file %s\n", filename);
         return EXIT_FAILURE;
     }
-    
-    
-    char line[MAX_LINE_LENGTH];     // buffer
-    int min_value = INT_MAX;        // min value to pos inf
-    int valid_int = 0;              // flag to determine if the data is valid
 
+    char line[MAX_LINE_LENGTH];     // buffer
+
+    // sum divided by count is the mean --> sum/count = mean
+    int min_value = INT_MAX;        // min value to neg inf
+    int valid_int = 0; 
+    int num_fields = 0;  // Initialize num_fields here
 
     // skips the header line
     if (fgets(line, sizeof(line), file) == NULL) {
@@ -125,58 +127,135 @@ int min_field(int field_index, const char *filename) {
     }
 
     // needs to read the csv lines from the input
-    while (fgets(line, sizeof(line), file)){       // reads lines
-        char *field;        // pointer to store each field
-        int curr_column = 0;     // holds the current column value
-        int curr_value;          // stores the converted integer value
+    while (fgets(line, sizeof(line), file)) {  // reads lines
+        char **fields = split_by_commas(line, &num_fields);  // Split the line into fields
 
-        // split the field by comma or newline
-        field = strtok(line, ",\n");
+        if (num_fields == 0) {
+            continue;  // Skip empty lines
+        }
 
-        // field is not empty
-        while (field != NULL){      //reads fields
+        // Process each field
+        for (int curr_column = 0; curr_column < num_fields; curr_column++) {
+            char *field = fields[curr_column];  // Current field
+
             // check for quotes
             char *processed_field = process_quoted_field(field);
 
-            // if the current colum is the right field index
+            // if the current column is the right field index
             if (curr_column == field_index) {
-                // sscanf turns "100" (string) -> 100 (int) and store that into the addy at value
-                // sscanf == 1, means that it successfully converted
+                int curr_value;
+
+                // sscanf turns "100" (string) -> 100 (int) and store that into curr_value
                 if (sscanf(processed_field, "%d", &curr_value) == 1) {
                     // after successful conversion, determine the min value
-                    if(curr_value < min_value) {
-                        min_value = curr_value;  // keep track of the min value
+                    if(curr_value < max_value) {
+                        max_value = curr_value;  // keep track of the min value
                     }
                     // valid integers have been found
                     valid_int = 1;
                 } 
 
-                // if a new string was made for quoted fields, we need to free it after usage
+                // if a new string was made for quoted fields, free it after usage
                 if (processed_field != field) {
                     free(processed_field);
                 }
-            
-            // since the target value has been found and min is updated, exit from inner loop
-            break;
             }
-
-            curr_column++;
-            field = strtok(NULL, ",\n");    //updates to the next field
         }
+
+        // Free the memory allocated for fields after processing the line
+        for (int i = 0; i < num_fields; i++) {
+            free(fields[i]);
+        }
+        free(fields);
     }
+
     fclose(file);
 
-    // no valid integers read to calculate min with
-    if(valid_int == 0){
+    // If no valid numeric data was found
+    if (valid_int == 0) {
         fprintf(stderr, "Error: No valid numeric data in the specified field\n");
         return EXIT_FAILURE;
     }
 
-    printf("%d\n", min_value);
+    // Calculate and return the mean
+    
+    printf("Min_value: %d\n", min_value);
     return min_value;
 }
+
+// int min_field(int field_index, const char *filename) {
+//     FILE *file = fopen(filename, "r");  // Open the file for reading
+//     if (file == NULL) {
+//         fprintf(stderr, "Error: Unable to open file %s\n", filename);
+//         return EXIT_FAILURE;
+//     }
+    
+    
+//     char line[MAX_LINE_LENGTH];     // buffer
+//     int min_value = INT_MAX;        // min value to pos inf
+//     int valid_int = 0;              // flag to determine if the data is valid
+
+
+//     // skips the header line
+//     if (fgets(line, sizeof(line), file) == NULL) {
+//         fprintf(stderr, "Error: File is empty or unable to read header\n");
+//         fclose(file);
+//         return EXIT_FAILURE;
+//     }
+
+//     // needs to read the csv lines from the input
+//     while (fgets(line, sizeof(line), file)){       // reads lines
+//         char *field;        // pointer to store each field
+//         int curr_column = 0;     // holds the current column value
+//         int curr_value;          // stores the converted integer value
+
+//         // split the field by comma or newline
+//         field = strtok(line, ",\n");
+
+//         // field is not empty
+//         while (field != NULL){      //reads fields
+//             // check for quotes
+//             char *processed_field = process_quoted_field(field);
+
+//             // if the current colum is the right field index
+//             if (curr_column == field_index) {
+//                 // sscanf turns "100" (string) -> 100 (int) and store that into the addy at value
+//                 // sscanf == 1, means that it successfully converted
+//                 if (sscanf(processed_field, "%d", &curr_value) == 1) {
+//                     // after successful conversion, determine the min value
+//                     if(curr_value < min_value) {
+//                         min_value = curr_value;  // keep track of the min value
+//                     }
+//                     // valid integers have been found
+//                     valid_int = 1;
+//                 } 
+
+//                 // if a new string was made for quoted fields, we need to free it after usage
+//                 if (processed_field != field) {
+//                     free(processed_field);
+//                 }
+            
+//             // since the target value has been found and min is updated, exit from inner loop
+//             break;
+//             }
+
+//             curr_column++;
+//             field = strtok(NULL, ",\n");    //updates to the next field
+//         }
+//     }
+//     fclose(file);
+
+//     // no valid integers read to calculate min with
+//     if(valid_int == 0){
+//         fprintf(stderr, "Error: No valid numeric data in the specified field\n");
+//         return EXIT_FAILURE;
+//     }
+
+//     printf("%d\n", min_value);
+//     return min_value;
+// }
 //updated MAX
-double max_field(int field_index, const char *filename) {
+int max_field(int field_index, const char *filename) {
     FILE *file = fopen(filename, "r");  // Open the file for reading
     if (file == NULL) {
         fprintf(stderr, "Error: Unable to open file %s\n", filename);
@@ -514,7 +593,7 @@ void parse_header(const char *filename, char header[MAX_FIELDS][MAX_LINE_LENGTH]
 int parse_field_name(const char *field_name, char header[MAX_FIELDS][MAX_LINE_LENGTH], int *num_fields) {
     for (int i = 0; i < *num_fields; i++) {
         if (strcmp(header[i], field_name) == 0) {
-            printf("%d\n", i);
+            printf("INDEX: %d\n", i);
             return i;  // Return the index of the matching field
         }
     }
