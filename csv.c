@@ -504,7 +504,7 @@ int main(int argc, char *argv[]) {
                 fprintf(stderr, "Error: Field '%s' not found in header\n", argv[i + 1]);
                 return EXIT_FAILURE;
             }
-            printf("Minimum value for field %s: ", argv[i + 1]);
+            //printf("%s: ", argv[i + 1]);
             min_field(field_index, filename);
         } else if (strcmp(argv[i], "-max") == 0) {
             //field_index = h_flag ? parse_field_name(argv[i + 1], header, &num_fields) : atoi(argv[i + 1]);
@@ -518,7 +518,7 @@ int main(int argc, char *argv[]) {
                 fprintf(stderr, "Error: Field '%s' not found in header\n", argv[i + 1]);
                 return EXIT_FAILURE;
             }
-            printf("Maximum value for field %s: ", argv[i + 1]);
+            //printf("%s: ", argv[i + 1]);
             max_field(field_index, filename);
         } else if (strcmp(argv[i], "-mean") == 0) { // do we need this:  && i + 1 < argc
             //field_index = h_flag ? parse_field_name(argv[i + 1], header, &num_fields) : atoi(argv[i + 1]);
@@ -532,7 +532,7 @@ int main(int argc, char *argv[]) {
                 fprintf(stderr, "Error: Field '%s' not found in header\n", argv[i + 1]);
                 return EXIT_FAILURE;
             }
-            printf("Mean value for field %s: ", argv[i + 1]);
+            //printf("%s: ", argv[i + 1]);
             mean_field(field_index, filename);
         }
     }
