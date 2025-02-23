@@ -400,7 +400,7 @@ int main(int argc, char *argv[]) {
 
     parse_header(filename, header, &num_fields);
     
-    for (int i = 1; i < argc - 1; i++) {
+    for (int i = 1; i < argc - 1; i=+2) {
         if (strcmp(argv[i], "-f") == 0) {
             count_fields(filename);
         } else if (strcmp(argv[i], "-r") == 0) {
