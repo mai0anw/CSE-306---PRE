@@ -186,7 +186,7 @@ double max_field(int field_index, const char *filename) {
     char line[MAX_LINE_LENGTH];     // buffer
 
     // sum divided by count is the mean --> sum/count = mean
-    int min_value = INT_MAX;        // min value to pos inf
+    int max_value = INT_MIN;        // min value to neg inf
     int valid_int = 0; 
     int num_fields = 0;  // Initialize num_fields here
 
