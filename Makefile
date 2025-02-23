@@ -10,5 +10,18 @@ ifeq ($(OS), Linux)
 endif
 
 CC = gcc
-CFLAGS = -Wall -std=c11 -ggdb
+CFLAGS = -Wall -std=c11
+
+
+csv.o: csv.c
+	$(CC) $(CFLAGS) -c csv.c
+
+tests.o: tests.c csv.h
+	$(CC) $(CFLAGS) -I $(INCLUDE_PATH) -c tests.c
+
+tests: tests.o csv.o
+	$(CC) $(CFLAGS) -L $(LIB_PATH) -I $(INCLUDE_PATH) -o tests $(OBJECTS) -lcriterion
+
+clean:
+	rm -f *~ $(OBJECTS) tests
 
