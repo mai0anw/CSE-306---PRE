@@ -8,4 +8,4 @@ void runTest_count_fields(const char *filename, int expected) {
 
 }
 
-Tests(PRE, test00) { runTest_count_fields("05020004-eng.csv", 8); }
+Test(PRE, test00) { runTest_count_fields("05020004-eng.csv", 8); }
