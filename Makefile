@@ -1,8 +1,4 @@
-# Compiler and flags
-CC := gcc
-CFLAGS := -std=c11 -Wall -Wextra -pedantic
-
-# OS-specific paths for Criterion (testing framework)
+# OS identification from: https://stackoverflow.com/questions/714100/os-detecting-makefile
 OS := $(shell uname -s)
 
 ifeq ($(OS), Darwin) 
@@ -14,32 +10,19 @@ ifeq ($(OS), Linux)
   LIB_PATH := /util/criterion/lib/x86_64-linux-gnu
 endif
 
-# Target executables
-TARGET := csv
-TEST_TARGET := tests
+CC := gcc
+CFLAGS := -std=c11 -Wall
 
-# Source files
-SRCS := csv.c
-TEST_SRCS := tests.c
+OBJECTS := csv.o tests.o
 
-# Object files
-OBJS := $(SRCS:.c=.o)
-TEST_OBJS := $(TEST_SRCS:.c=.o)
+code.o: csv.c
+	$(CC) $(CFLAGS) -c csv.c
 
-# Build the main CSV processing executable
-all: $(TARGET)
+tests.o: tests.c csv.h
+	$(CC) $(CFLAGS) -I $(INCLUDE_PATH) -c tests.c
 
-$(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
+tests: tests.o csv.o
+	$(CC) $(CFLAGS) -L $(LIB_PATH) -I $(INCLUDE_PATH) -o tests $(OBJECTS) -lcriterion
 
-# Build tests with Criterion
-tests: $(TEST_OBJS) $(OBJS)
-	$(CC) $(CFLAGS) -I $(INCLUDE_PATH) -L $(LIB_PATH) -o $(TEST_TARGET) $(TEST_OBJS) $(OBJS) -lcriterion
-
-# Compile source files into object files
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
-
-# Clean build artifacts
 clean:
-	rm -f $(TARGET) $(TEST_TARGET) $(OBJS) $(TEST_OBJS)
+	rm -f *~ $(OBJECTS) tests
