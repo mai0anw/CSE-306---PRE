@@ -4,7 +4,7 @@
 
 void runTest_count_fields(const char *filename, int expected) {
     int actual = count_fields(filename);
-    cr_assert_eq( actual, expected, "count_fields(\"%s\") should have produced \"%d\", but returned \"%d\" instead.\n", in, expected, actual);
+    cr_assert_eq( actual, expected, "count_fields(\"%s\") should have produced \"%d\", but returned \"%d\" instead.\n", filename, expected, actual);
 
 }
 
