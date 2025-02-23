@@ -385,138 +385,80 @@ int parse_field_name(const char *field_name, char header[MAX_FIELDS][MAX_LINE_LE
     return -1;  // Field not found
 }
 
-// int main(int argc, char *argv[]) {
-//     if (argc < 1) {
-//         fprintf(stderr, "Usage: %s [-f | -r] <filename>\n", argv[0]);
-//         return EXIT_FAILURE;
-//     }
-
-//     const char *filename = argv[argc - 1];
-
-//     int field_index = -1;
-//     char *field_name = NULL;
-//     char header[MAX_FIELDS][MAX_LINE_LENGTH];
-//     int num_fields = 0;
-
-//     parse_header(filename, header, &num_fields);
-    
-//     for (int i = 1; i < argc - 1; i++) {
-//         if (strcmp(argv[i], "-f") == 0) {
-//             count_fields(filename);
-//         } else if (strcmp(argv[i], "-r") == 0) {
-//             count_records(filename);
-//         } else if (strcmp(argv[i], "-h") == 0) {
-
-//             if (strcmp(argv[i + 1], "-min") == 0) {
-//                 field_name = argv[i + 2];  // use the field name provided after -min
-//                 field_index = parse_field_name(field_name, header, &num_fields);
-
-//                 if (field_index == -1) {
-//                     fprintf(stderr, "Error: Field '%s' not found in header\n", field_name);
-//                     return EXIT_FAILURE;
-//                 }
-                
-//                 min_field(field_index, filename);
-//             }
-
-//             else if (strcmp(argv[i + 1], "-max") == 0) {
-//                 field_name = argv[i + 2];  // use the field name provided after -min
-//                 field_index = parse_field_name(field_name, header, &num_fields);
-
-//                 if (field_index == -1) {
-//                     fprintf(stderr, "Error: Field '%s' not found in header\n", field_name);
-//                     return EXIT_FAILURE;
-//                 }
-                
-//                 max_field(field_index, filename);
-//             }
-
-//             else if (strcmp(argv[i + 1], "-mean") == 0) {
-//                 field_name = argv[i + 2];  // use the field name provided after -min
-//                 field_index = parse_field_name(field_name, header, &num_fields);
-//                 printf("%d\n", field_index);
-
-//                 if (field_index == -1) {
-//                     fprintf(stderr, "Error: Field '%s' not found in header\n", field_name);
-//                     return EXIT_FAILURE;
-//                 }
-                
-//                 mean_field(field_index, filename);
-//             }
-//         } 
-//         else if (strcmp(argv[i], "-min") == 0) {
-//             int conversion = atoi(argv[i + 1]);
-//             min_field(conversion, filename);
-//         } else if (strcmp(argv[i], "-max") == 0) {
-//             int conversion = atoi(argv[i + 1]);
-//             max_field(conversion, filename);
-//         } else if (strcmp(argv[i], "-mean") == 0) {
-//             int conversion = atoi(argv[i + 1]);
-//             mean_field(conversion, filename);
-//         } else {
-//             return EXIT_FAILURE;
-//         }
-//     }
-
-    
-//     return EXIT_SUCCESS;
-// }
-
-
 int main(int argc, char *argv[]) {
-    if (argc < 2) {
-        fprintf(stderr, "Usage: %s [-f | -r | -h] <filename>\n", argv[0]);
+    if (argc < 1) {
+        fprintf(stderr, "Usage: %s [-f | -r] <filename>\n", argv[0]);
         return EXIT_FAILURE;
     }
 
     const char *filename = argv[argc - 1];
-    
-    // Initialize variables for header parsing
+
     int field_index = -1;
     char *field_name = NULL;
     char header[MAX_FIELDS][MAX_LINE_LENGTH];
     int num_fields = 0;
-    
-    parse_header(filename, header, &num_fields);
 
+    parse_header(filename, header, &num_fields);
+    
     for (int i = 1; i < argc - 1; i++) {
         if (strcmp(argv[i], "-f") == 0) {
             count_fields(filename);
         } else if (strcmp(argv[i], "-r") == 0) {
             count_records(filename);
         } else if (strcmp(argv[i], "-h") == 0) {
-            if (i + 2 < argc) {
-                if (strcmp(argv[i + 1], "-min") == 0) {
-                    field_name = argv[i + 2];
-                    field_index = parse_field_name(field_name, header, &num_fields);
-                    if (field_index == -1) {
-                        fprintf(stderr, "Error: Field '%s' not found in header\n", field_name);
-                        return EXIT_FAILURE;
-                    }
-                    min_field(field_index, filename);
-                } else if (strcmp(argv[i + 1], "-max") == 0) {
-                    field_name = argv[i + 2];
-                    field_index = parse_field_name(field_name, header, &num_fields);
-                    if (field_index == -1) {
-                        fprintf(stderr, "Error: Field '%s' not found in header\n", field_name);
-                        return EXIT_FAILURE;
-                    }
-                    max_field(field_index, filename);
-                } else if (strcmp(argv[i + 1], "-mean") == 0) {
-                    field_name = argv[i + 2];
-                    field_index = parse_field_name(field_name, header, &num_fields);
-                    if (field_index == -1) {
-                        fprintf(stderr, "Error: Field '%s' not found in header\n", field_name);
-                        return EXIT_FAILURE;
-                    }
-                    mean_field(field_index, filename);
+
+            if (strcmp(argv[i + 1], "-min") == 0) {
+                field_name = argv[i + 2];  // use the field name provided after -min
+                field_index = parse_field_name(field_name, header, &num_fields);
+
+                if (field_index == -1) {
+                    fprintf(stderr, "Error: Field '%s' not found in header\n", field_name);
+                    return EXIT_FAILURE;
                 }
-            } else {
-                fprintf(stderr, "Error: Missing field name after -h option\n");
-                return EXIT_FAILURE;
+                
+                min_field(field_index, filename);
             }
+
+            else if (strcmp(argv[i + 1], "-max") == 0) {
+                field_name = argv[i + 2];  // use the field name provided after -min
+                field_index = parse_field_name(field_name, header, &num_fields);
+
+                if (field_index == -1) {
+                    fprintf(stderr, "Error: Field '%s' not found in header\n", field_name);
+                    return EXIT_FAILURE;
+                }
+                
+                max_field(field_index, filename);
+            }
+
+            else if (strcmp(argv[i + 1], "-mean") == 0) {
+                field_name = argv[i + 2];  // use the field name provided after -min
+                field_index = parse_field_name(field_name, header, &num_fields);
+                printf("%d\n", field_index);
+
+                if (field_index == -1) {
+                    fprintf(stderr, "Error: Field '%s' not found in header\n", field_name);
+                    return EXIT_FAILURE;
+                }
+                
+                mean_field(field_index, filename);
+            }
+        } else if (strcmp(argv[i], "-min") == 0) {
+            int conversion = atoi(argv[i + 1]);
+            min_field(conversion, filename);
+        } else if (strcmp(argv[i], "-max") == 0) {
+            int conversion = atoi(argv[i + 1]);
+            max_field(conversion, filename);
+        } else if (strcmp(argv[i], "-mean") == 0) {
+            int conversion = atoi(argv[i + 1]);
+            mean_field(conversion, filename);
+        } else {
+            return EXIT_FAILURE;
         }
     }
 
+    
     return EXIT_SUCCESS;
 }
+
+
