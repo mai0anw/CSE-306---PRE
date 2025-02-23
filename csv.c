@@ -105,7 +105,7 @@ char* process_quoted_field(char *field) {
 }
 
 //updated MIN
-int max_field(int field_index, const char *filename) {
+int min_field(int field_index, const char *filename) {
     FILE *file = fopen(filename, "r");  // Open the file for reading
     if (file == NULL) {
         fprintf(stderr, "Error: Unable to open file %s\n", filename);
