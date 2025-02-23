@@ -468,18 +468,17 @@ int main(int argc, char *argv[]) {
     }
 
     const char *filename = argv[argc - 1];
-    printf("File: %s\n", filename);  // Debugging line
+    //printf("file: %s\n", filename);
 
-    // Initialize variables for header parsing
+    // initialize variables for header parsing
     int field_index = -1;
     char *field_name = NULL;
     char header[MAX_FIELDS][MAX_LINE_LENGTH];
     int num_fields = 0;
     
     parse_header(filename, header, &num_fields);
-    printf("Header parsed. Num fields: %d\n", num_fields);  // Debugging line
 
-    // Check if -h flag is present
+    // checks if -h flag is present
     bool h_flag = false;
     for (int i = 1; i < argc - 1; i++) {
         if (strcmp(argv[i], "-h") == 0) {
@@ -488,36 +487,56 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    // Process the arguments
+    // process the arguments
     for (int i = 1; i < argc - 1; i++) {
         if (strcmp(argv[i], "-f") == 0) {
             count_fields(filename);
         } else if (strcmp(argv[i], "-r") == 0) {
             count_records(filename);
-        } else if (strcmp(argv[i], "-min") == 0 && i + 1 < argc) {
-            field_index = h_flag ? parse_field_name(argv[i + 1], header, &num_fields) : atoi(argv[i + 1]);
+        } else if (strcmp(argv[i], "-min") == 0) {  // if -min and there is an argument after it
+            //field_index = h_flag ? parse_field_name(argv[i + 1], header, &num_fields) : atoi(argv[i + 1]);
+            if (h_flag) {
+                field_index = parse_field_name(argv[i + 1], header, &num_fields);
+            } else {
+                field_index = atoi(argv[i + 1]);
+            }
+
             if (field_index == -1) {
                 fprintf(stderr, "Error: Field '%s' not found in header\n", argv[i + 1]);
                 return EXIT_FAILURE;
             }
             printf("Minimum value for field %s: ", argv[i + 1]);
             min_field(field_index, filename);
-        } else if (strcmp(argv[i], "-max") == 0 && i + 1 < argc) {
-            field_index = h_flag ? parse_field_name(argv[i + 1], header, &num_fields) : atoi(argv[i + 1]);
+        } else if (strcmp(argv[i], "-max") == 0) {
+            //field_index = h_flag ? parse_field_name(argv[i + 1], header, &num_fields) : atoi(argv[i + 1]);
+            if (h_flag) {
+                field_index = parse_field_name(argv[i + 1], header, &num_fields);
+            } else {
+                field_index = atoi(argv[i + 1]);
+            }
+
             if (field_index == -1) {
                 fprintf(stderr, "Error: Field '%s' not found in header\n", argv[i + 1]);
                 return EXIT_FAILURE;
             }
             printf("Maximum value for field %s: ", argv[i + 1]);
             max_field(field_index, filename);
-        } else if (strcmp(argv[i], "-mean") == 0 && i + 1 < argc) {
-            field_index = h_flag ? parse_field_name(argv[i + 1], header, &num_fields) : atoi(argv[i + 1]);
+        } else if (strcmp(argv[i], "-mean") == 0) { // do we need this:  && i + 1 < argc
+            //field_index = h_flag ? parse_field_name(argv[i + 1], header, &num_fields) : atoi(argv[i + 1]);
+            if (h_flag) {
+                field_index = parse_field_name(argv[i + 1], header, &num_fields);
+            } else {
+                field_index = atoi(argv[i + 1]);
+            }
+
             if (field_index == -1) {
                 fprintf(stderr, "Error: Field '%s' not found in header\n", argv[i + 1]);
                 return EXIT_FAILURE;
             }
             printf("Mean value for field %s: ", argv[i + 1]);
             mean_field(field_index, filename);
+        } else {
+            return EXIT_FAILURE;
         }
     }
 
