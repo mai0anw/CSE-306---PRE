@@ -39,6 +39,53 @@ void count_records(const char *filename) {
     fclose(file);
 }
 
+char** split_by_commas(const char *input, int *num_fields) {
+    int capacity = 10;
+    char **fields = malloc(capacity * sizeof(char*));
+    int field_count = 0;
+    
+    const char *start = input;
+    int i = 0;
+    bool in_quotes = false;
+    
+    for (i = 0; input[i] != '\0'; i++) {
+        // Toggle in_quotes when encountering a quote
+        if (input[i] == '"') {
+            in_quotes = !in_quotes;
+        }
+
+        // Split on comma when not inside quotes
+        if (input[i] == ',' && !in_quotes) {
+            // Allocate space for the new field (substring from start to i)
+            int length = i - (start - input);
+            fields[field_count] = malloc(length + 1);
+            strncpy(fields[field_count], start, length);
+            fields[field_count][length] = '\0';  // Null-terminate the string
+            
+            field_count++;
+            if (field_count >= capacity) {
+                // Resize the fields array if needed
+                capacity *= 2;
+                fields = realloc(fields, capacity * sizeof(char*));
+            }
+            
+            // Move start to the next character after the comma
+            start = input + i + 1;
+        }
+    }
+
+    // Handle the last field (after the last comma or at the end of the string)
+    if (start != input + i) {
+        fields[field_count] = malloc(i - (start - input) + 1);
+        strncpy(fields[field_count], start, i - (start - input));
+        fields[field_count][i - (start - input)] = '\0';
+        field_count++;
+    }
+
+    *num_fields = field_count;
+    return fields;
+}
+
 char* process_quoted_field(char *field) {
     int len = strlen(field);
 
@@ -210,6 +257,7 @@ double mean_field(int field_index, const char *filename) {
     // sum divided by count is the mean --> sum/count = mean
     double sum = 0;
     int count = 0;
+    int num_fields = 0;  // Initialize num_fields here
 
     // skips the header line
     if (fgets(line, sizeof(line), file) == NULL) {
@@ -219,61 +267,143 @@ double mean_field(int field_index, const char *filename) {
     }
 
     // needs to read the csv lines from the input
-    while (fgets(line, sizeof(line), file)){       // reads lines
-        char *field;        // pointer to store each field
-        int curr_column = 0;     // holds the current column value
-        double curr_value;          // stores the converted integer value
+    while (fgets(line, sizeof(line), file)) {  // reads lines
+        char **fields = split_by_commas(line, &num_fields);  // Split the line into fields
 
-        // split the field by comma or newline
-        field = strtok(line, ",\n");
+        if (num_fields == 0) {
+            continue;  // Skip empty lines
+        }
 
-        // field is not empty
-        while (field != NULL){      //reads fields
+        // Process each field
+        for (int curr_column = 0; curr_column < num_fields; curr_column++) {
+            char *field = fields[curr_column];  // Current field
+
             // check for quotes
             char *processed_field = process_quoted_field(field);
 
-            // if the current colum is the right field index
+            // if the current column is the right field index
             if (curr_column == field_index) {
-                // sscanf turns "100" (string) -> 100 (int) and store that into the addy at value
-                // sscanf == 1, means that it successfully converted
+                double curr_value;
                 printf("field: %d\n", field_index);
+
+                // sscanf turns "100.5" (string) -> 100.5 (double) and store that into curr_value
                 if (sscanf(processed_field, "%lf", &curr_value) == 1) {
-                    // after successful conversion, accumulate both sum and count
                     printf("curr_value: %f\n", curr_value);
                     printf("sum: %f\n", sum);
                     printf("count: %d\n", count);
-                    sum += curr_value;  
-                    count++;
+                    sum += curr_value;  // accumulate the sum
+                    count++;             // increment the count
                 }
 
-                // if a new string was made for quoted fields, we need to free it after usage
+                // if a new string was made for quoted fields, free it after usage
                 if (processed_field != field) {
                     free(processed_field);
                 }
-            
-            // since the target value has been found and min is updated, exit from inner loop
-            //break;
             }
-
-            curr_column++;
-            field = strtok(NULL, ",\n");    //updates to the next field
         }
+
+        // Free the memory allocated for fields after processing the line
+        for (int i = 0; i < num_fields; i++) {
+            free(fields[i]);
+        }
+        free(fields);
     }
 
-    // if not a valid mean (meaning no integers), return EXIT_FAILURE?
-    if (sum == 0){
+    fclose(file);
+
+    // If no valid numeric data was found
+    if (count == 0) {
         fprintf(stderr, "Error: No valid numeric data in the specified field\n");
         return EXIT_FAILURE;
     }
 
-    //otherwise returns the means
-    double mean = sum/count;
-    printf("%f\n", sum);
-    printf("%d\n", count);
-    printf("%f\n", mean);
+    // Calculate and return the mean
+    double mean = sum / count;
+    printf("Sum: %f\n", sum);
+    printf("Count: %d\n", count);
+    printf("Mean: %f\n", mean);
     return mean;
-
 }
+
+
+// double mean_field(int field_index, const char *filename) {
+//     FILE *file = fopen(filename, "r");  // Open the file for reading
+//     if (file == NULL) {
+//         fprintf(stderr, "Error: Unable to open file %s\n", filename);
+//         return EXIT_FAILURE;
+//     }
+
+//     char line[MAX_LINE_LENGTH];     // buffer
+
+//     // sum divided by count is the mean --> sum/count = mean
+//     double sum = 0;
+//     int count = 0;
+//     int num_fields = 0;
+
+//     // skips the header line
+//     if (fgets(line, sizeof(line), file) == NULL) {
+//         fprintf(stderr, "Error: File is empty or unable to read header\n");
+//         fclose(file);
+//         return EXIT_FAILURE;
+//     }
+
+//     // needs to read the csv lines from the input
+//     while (fgets(line, sizeof(line), file)){       // reads lines
+//         char *field;        // pointer to store each field
+//         int curr_column = 0;     // holds the current column value
+//         double curr_value;          // stores the converted integer value
+
+//         // split the field by comma or newline
+//         //field = strtok(line, ",\n");
+//         char **fields = split_by_commas(input, &num_fields);
+
+//         // field is not empty
+//         while (field != NULL){      //reads fields
+//             // check for quotes
+//             char *processed_field = process_quoted_field(field);
+
+//             // if the current colum is the right field index
+//             if (curr_column == field_index) {
+//                 // sscanf turns "100" (string) -> 100 (int) and store that into the addy at value
+//                 // sscanf == 1, means that it successfully converted
+//                 printf("field: %d\n", field_index);
+//                 if (sscanf(processed_field, "%lf", &curr_value) == 1) {
+//                     // after successful conversion, accumulate both sum and count
+//                     printf("curr_value: %f\n", curr_value);
+//                     printf("sum: %f\n", sum);
+//                     printf("count: %d\n", count);
+//                     sum += curr_value;  
+//                     count++;
+//                 }
+
+//                 // if a new string was made for quoted fields, we need to free it after usage
+//                 if (processed_field != field) {
+//                     free(processed_field);
+//                 }
+            
+//             // since the target value has been found and min is updated, exit from inner loop
+//             //break;
+//             }
+
+//             curr_column++;
+//             field = strtok(NULL, ",\n");    //updates to the next field
+//         }
+//     }
+
+//     // if not a valid mean (meaning no integers), return EXIT_FAILURE?
+//     if (sum == 0){
+//         fprintf(stderr, "Error: No valid numeric data in the specified field\n");
+//         return EXIT_FAILURE;
+//     }
+
+//     //otherwise returns the means
+//     double mean = sum/count;
+//     printf("%f\n", sum);
+//     printf("%d\n", count);
+//     printf("%f\n", mean);
+//     return mean;
+
+// }
 
 void parse_header(const char *filename, char header[MAX_FIELDS][MAX_LINE_LENGTH], int *num_fields) {
     // Open the CSV file for reading
