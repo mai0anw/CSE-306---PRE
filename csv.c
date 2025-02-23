@@ -493,7 +493,6 @@ int main(int argc, char *argv[]) {
         } else if (strcmp(argv[i], "-r") == 0) {
             count_records(filename);
         } else if (strcmp(argv[i], "-min") == 0) {  // if -min and there is an argument after it
-            //field_index = h_flag ? parse_field_name(argv[i + 1], header, &num_fields) : atoi(argv[i + 1]);
             if (h_flag) {
                 field_index = parse_field_name(argv[i + 1], header, &num_fields);
             } else {
@@ -504,10 +503,8 @@ int main(int argc, char *argv[]) {
                 fprintf(stderr, "Error: Field '%s' not found in header\n", argv[i + 1]);
                 return EXIT_FAILURE;
             }
-            //printf("%s: ", argv[i + 1]);
             min_field(field_index, filename);
         } else if (strcmp(argv[i], "-max") == 0) {
-            //field_index = h_flag ? parse_field_name(argv[i + 1], header, &num_fields) : atoi(argv[i + 1]);
             if (h_flag) {
                 field_index = parse_field_name(argv[i + 1], header, &num_fields);
             } else {
@@ -518,10 +515,8 @@ int main(int argc, char *argv[]) {
                 fprintf(stderr, "Error: Field '%s' not found in header\n", argv[i + 1]);
                 return EXIT_FAILURE;
             }
-            //printf("%s: ", argv[i + 1]);
             max_field(field_index, filename);
         } else if (strcmp(argv[i], "-mean") == 0) { // do we need this:  && i + 1 < argc
-            //field_index = h_flag ? parse_field_name(argv[i + 1], header, &num_fields) : atoi(argv[i + 1]);
             if (h_flag) {
                 field_index = parse_field_name(argv[i + 1], header, &num_fields);
             } else {
@@ -532,9 +527,9 @@ int main(int argc, char *argv[]) {
                 fprintf(stderr, "Error: Field '%s' not found in header\n", argv[i + 1]);
                 return EXIT_FAILURE;
             }
-            //printf("%s: ", argv[i + 1]);
             mean_field(field_index, filename);
         }
+        // added functionality for the records funtion in the same manner as min/max/mean
     }
 
     return EXIT_SUCCESS;
