@@ -324,7 +324,7 @@ int main(int argc, char *argv[]) {
     char header[MAX_FIELDS][MAX_LINE_LENGTH];
     int num_fields = 0;
 
-    parse_header(filename, header, num_fields);
+    parse_header(filename, header, &num_fields);
     
     for (int i = 1; i < argc - 1; i++) {
         printf("Test 1\n");
@@ -337,7 +337,7 @@ int main(int argc, char *argv[]) {
 
             if (strcmp(argv[i + 1], "-min") == 0) {
                 field_name = argv[i + 1];  // use the field name provided after -min
-                field_index = parse_field_name(field_name, header, num_fields);
+                field_index = parse_field_name(field_name, header, &num_fields);
 
                 if (field_index == -1) {
                     fprintf(stderr, "Error: Field '%s' not found in header\n", field_name);
@@ -349,7 +349,7 @@ int main(int argc, char *argv[]) {
 
             else if (strcmp(argv[i + 1], "-max") == 0) {
                 field_name = argv[i + 1];  // use the field name provided after -min
-                field_index = parse_field_name(field_name, header, num_fields);
+                field_index = parse_field_name(field_name, header, &num_fields);
 
                 if (field_index == -1) {
                     fprintf(stderr, "Error: Field '%s' not found in header\n", field_name);
@@ -361,7 +361,7 @@ int main(int argc, char *argv[]) {
 
             else if (strcmp(argv[i + 1], "-mean") == 0) {
                 field_name = argv[i + 1];  // use the field name provided after -min
-                field_index = parse_field_name(field_name, header, num_fields);
+                field_index = parse_field_name(field_name, header, &num_fields);
 
                 if (field_index == -1) {
                     fprintf(stderr, "Error: Field '%s' not found in header\n", field_name);
