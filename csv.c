@@ -197,7 +197,6 @@ int max_field(int field_index, const char *filename) {
 
 }
 
-
 double mean_field(int field_index, const char *filename) {
     FILE *file = fopen(filename, "r");  // Open the file for reading
     if (file == NULL) {
@@ -366,19 +365,22 @@ int main(int argc, char *argv[]) {
                 
                 mean_field(field_index, filename);
             }
-        } else if (strcmp(argv[i], "-min") == 0) {
-            int conversion = atoi(argv[i + 1]);
-            min_field(conversion, filename);
-        } else if (strcmp(argv[i], "-max") == 0) {
-            int conversion = atoi(argv[i + 1]);
-            max_field(conversion, filename);
-        } else if (strcmp(argv[i], "-mean") == 0) {
-            int conversion = atoi(argv[i + 1]);
-            mean_field(conversion, filename);
-        } else {
-            return EXIT_FAILURE;
-        }
+        } 
+        // hello
+        // else if (strcmp(argv[i], "-min") == 0) {
+        //     int conversion = atoi(argv[i + 1]);
+        //     min_field(conversion, filename);
+        // } else if (strcmp(argv[i], "-max") == 0) {
+        //     int conversion = atoi(argv[i + 1]);
+        //     max_field(conversion, filename);
+        // } else if (strcmp(argv[i], "-mean") == 0) {
+        //     int conversion = atoi(argv[i + 1]);
+        //     mean_field(conversion, filename);
+        // } else {
+        //     return EXIT_FAILURE;
+        // }
     }
+
     
     return EXIT_SUCCESS;
 }
