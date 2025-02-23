@@ -15,7 +15,7 @@ void count_fields(const char *filename) {
     }
     char line[MAX_LINE_LENGTH];
     if (fgets(line, sizeof(line), file)) {
-        count = 1;
+        int count = 1;
         for (char *ptr = line; *ptr; ptr++) {
             if (*ptr == ',') count++;
         }
