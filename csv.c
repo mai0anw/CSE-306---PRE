@@ -7,7 +7,7 @@
 #define MAX_LINE_LENGTH 1024
 #define MAX_FIELDS 8
 
-void count_fields(const char *filename) {
+int count_fields(const char *filename) {
     FILE *file = fopen(filename, "r");
     if (!file) {
         perror("Error opening file");
@@ -20,6 +20,7 @@ void count_fields(const char *filename) {
             if (*ptr == ',') count++;
         }
         printf("%d\n", count);
+        return count;
     }
     fclose(file);
 }
