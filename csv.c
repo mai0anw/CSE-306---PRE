@@ -249,7 +249,7 @@ double mean_field(int field_index, const char *filename) {
                 }
             
             // since the target value has been found and min is updated, exit from inner loop
-            break;
+            //break;
             }
 
             curr_column++;
