@@ -315,8 +315,6 @@ int main(int argc, char *argv[]) {
         return EXIT_FAILURE;
     }
 
-    printf("Hi mom\n");
-    
     const char *filename = argv[argc - 1];
 
     int field_index = -1;
@@ -327,9 +325,7 @@ int main(int argc, char *argv[]) {
     parse_header(filename, header, &num_fields);
     
     for (int i = 1; i < argc - 1; i++) {
-        printf("Test 1\n");
         if (strcmp(argv[i], "-f") == 0) {
-            printf("Test 2\n");
             count_fields(filename);
         } else if (strcmp(argv[i], "-r") == 0) {
             count_records(filename);
