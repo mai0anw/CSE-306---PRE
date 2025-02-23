@@ -237,6 +237,8 @@ double mean_field(int field_index, const char *filename) {
                 // sscanf == 1, means that it successfully converted
                 if (sscanf(processed_field, "%d", &curr_value) == 1) {
                     // after successful conversion, accumulate both sum and count
+                    printf("%f\n", sum);
+                    printf("%d\n", count);
                     sum += curr_value;  
                     count++;
                 }
@@ -256,7 +258,7 @@ double mean_field(int field_index, const char *filename) {
     }
 
     // if not a valid mean (meaning no integers), return EXIT_FAILURE?
-    if (count == 0){
+    if (sum == 0){
         fprintf(stderr, "Error: No valid numeric data in the specified field\n");
         return EXIT_FAILURE;
     }
