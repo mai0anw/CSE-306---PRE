@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -24,7 +25,7 @@ void count_fields(const char *filename) {
     fclose(file);
 }
 
-void count_records(const char *filename) {
+void count_records(const char *filename, bool has_header) {
     FILE *file = fopen(filename, "r");
     if (!file) {
         perror("Error opening file");
@@ -35,11 +36,12 @@ void count_records(const char *filename) {
     while (fgets(line, sizeof(line), file)) {
         count++;
     }
+    if (has_header) count--;
     printf("%d\n", count);
     fclose(file);
 }
 
-char* process_quoted_field(char *field) {
+char process_quoted_field(char *field) {
     int len = strlen(field);
 
     // if the field has quotes around it at the beginning and end
@@ -56,7 +58,7 @@ char* process_quoted_field(char *field) {
 
 }
 
-int min_field(int field_index, const char *filename) {
+int min_field(int field_index, const char *filename, int has_header) {
     FILE *file = fopen(filename, "r");  // Open the file for reading
     if (file == NULL) {
         fprintf(stderr, "Error: Unable to open file %s\n", filename);
@@ -69,11 +71,13 @@ int min_field(int field_index, const char *filename) {
     int valid_int = 0;              // flag to determine if the data is valid
 
 
-    // skips the header line
-    if (fgets(line, sizeof(line), file) == NULL) {
-        fprintf(stderr, "Error: File is empty or unable to read header\n");
-        fclose(file);
-        return EXIT_FAILURE;
+    // skips the header line if has_header is 1
+    if (has_header) {
+        if (fgets(line, sizeof(line), file) == NULL) {
+            fprintf(stderr, "Error: File is empty or unable to read header\n");
+            fclose(file);
+            return EXIT_FAILURE;
+        }
     }
 
     // needs to read the csv lines from the input
@@ -128,7 +132,7 @@ int min_field(int field_index, const char *filename) {
     return min_value;
 }
 
-int max_field(int field_index, const char *filename) {
+int max_field(int field_index, const char *filename, int has_header) {
     FILE *file = fopen(filename, "r");  // Open the file for reading
     if (file == NULL) {
         fprintf(stderr, "Error: Unable to open file %s\n", filename);
@@ -139,11 +143,13 @@ int max_field(int field_index, const char *filename) {
     int max_value = INT_MIN;        // max value to neg inf
     int valid_int = 0;              // flag to determine if the data is valid
 
-    // skips the header line
-    if (fgets(line, sizeof(line), file) == NULL) {
-        fprintf(stderr, "Error: File is empty or unable to read header\n");
-        fclose(file);
-        return EXIT_FAILURE;
+    // skips the header line if has_header is 1
+    if (has_header) {
+        if (fgets(line, sizeof(line), file) == NULL) {
+            fprintf(stderr, "Error: File is empty or unable to read header\n");
+            fclose(file);
+            return EXIT_FAILURE;
+        }
     }
 
     // needs to read the csv lines from the input
@@ -198,7 +204,7 @@ int max_field(int field_index, const char *filename) {
 }
 
 
-double mean_field(int field_index, const char *filename) {
+double mean_field(int field_index, const char *filename, int has_header) {
     FILE *file = fopen(filename, "r");  // Open the file for reading
     if (file == NULL) {
         fprintf(stderr, "Error: Unable to open file %s\n", filename);
@@ -211,11 +217,13 @@ double mean_field(int field_index, const char *filename) {
     double sum = 0;
     int count = 0;
 
-    // skips the header line
-    if (fgets(line, sizeof(line), file) == NULL) {
-        fprintf(stderr, "Error: File is empty or unable to read header\n");
-        fclose(file);
-        return EXIT_FAILURE;
+    // skips the header line if has_header is 1
+    if (has_header) {
+        if (fgets(line, sizeof(line), file) == NULL) {
+            fprintf(stderr, "Error: File is empty or unable to read header\n");
+            fclose(file);
+            return EXIT_FAILURE;
+        }
     }
 
     // needs to read the csv lines from the input
@@ -269,6 +277,8 @@ double mean_field(int field_index, const char *filename) {
 
 }
 
+
+
 void parse_header(const char *filename, char header[MAX_FIELDS][MAX_LINE_LENGTH], int *num_fields) {
     // Open the CSV file for reading
     FILE *file = fopen(filename, "r");
@@ -300,43 +310,24 @@ void parse_header(const char *filename, char header[MAX_FIELDS][MAX_LINE_LENGTH]
     fclose(file); // Close the file
 }
 
-int parse_field_name(const char *field_name, char header[MAX_FIELDS][MAX_LINE_LENGTH], int *num_fields) {
-    for (int i = 0; i < *num_fields; i++) {
-        if (strcmp(header[i], field_name) == 0) {
-            return i;  // Return the index of the matching field
-        }
-    }
-    return -1;  // Field not found
-}
+void record_check(const char *filename, int idx, char *val){
 
-void record_check(const char *filename, int idx, char *value){
-
-    FILE *file = fopen(filename, "r"); //pointer to open and read file
+    FILE *file = fopen(file, "r"); //pointer to open and read file
     char line[MAX_LINE_LENGTH]; //buffer that stores the header row
-    //char *value = val;
-    //int curr_col = 0;
+    char *value = val;
+    int curr_col = 0;
 
     while (fgets(line, sizeof(line), file)){
-
-      char line_copy[MAX_LINE_LENGTH];
-      strcpy(line_copy, line);
-
-
-      char *field;
-      int curr_col = 0;
-
-      
-      
+        char *field;
         field = strtok(line, ",\n"); //split each field
-	printf("%s", field);
 
         while (field != NULL){
             char *process_field = process_quoted_field(field);
             //processes the field and gets rid of the quotations
 
             if (curr_col == idx){
-                if(strcmp(process_field, value) == 0){
-                    printf("%s", line_copy); //print line if it matches
+                if(strcmp(field, value) == 0){
+                    print("%s", line); //print line if it matches
                 }
             }
 
@@ -357,90 +348,63 @@ void record_check(const char *filename, int idx, char *value){
 }
 
 int main(int argc, char *argv[]) {
-    if (argc < 1) {
+    if (argc < 3) {
         fprintf(stderr, "Usage: %s [-f | -r] <filename>\n", argv[0]);
         return EXIT_FAILURE;
     }
-
+    
+    bool has_header = false;
     const char *filename = argv[argc - 1];
 
     int field_index = -1;
     char *field_name = NULL;
+    char *field_value = NULL;
     char header[MAX_FIELDS][MAX_LINE_LENGTH];
     int num_fields = 0;
-    char *field_value = NULL;
-
-    parse_header(filename, header, &num_fields);
     
     for (int i = 1; i < argc - 1; i++) {
-        if (strcmp(argv[i], "-f") == 0) {
+        if (strcmp(argv[i], "-h") == 0) {
+            has_header = true;
+            parse_header(filename, header, &num_fields);
+        } else if (strcmp(argv[i], "-f") == 0) {
             count_fields(filename);
         } else if (strcmp(argv[i], "-r") == 0) {
-            count_records(filename);
-        } else if (strcmp(argv[i], "-h") == 0) {
-
-            if (strcmp(argv[i + 1], "-min") == 0) {
-                field_name = argv[i + 2];  // use the field name provided after -min
-                field_index = parse_field_name(field_name, header, &num_fields);
-
-                if (field_index == -1) {
-                    fprintf(stderr, "Error: Field '%s' not found in header\n", field_name);
-                    return EXIT_FAILURE;
-                }
-                
-                min_field(field_index, filename);
-            }
-
-            else if (strcmp(argv[i + 1], "-max") == 0) {
-                field_name = argv[i + 2];  // use the field name provided after -min
-                field_index = parse_field_name(field_name, header, &num_fields);
-
-                if (field_index == -1) {
-                    fprintf(stderr, "Error: Field '%s' not found in header\n", field_name);
-                    return EXIT_FAILURE;
-                }
-                
-                max_field(field_index, filename);
-            }
-
-            else if (strcmp(argv[i + 1], "-mean") == 0) {
-                field_name = argv[i + 2];  // use the field name provided after -min
-                field_index = parse_field_name(field_name, header, &num_fields);
-
-                if (field_index == -1) {
-                    fprintf(stderr, "Error: Field '%s' not found in header\n", field_name);
-                    return EXIT_FAILURE;
-                }
-                
-                mean_field(field_index, filename);
-            }
-
-	    else if (strcmp(argv[i + 1], "-records") == 0){
-	      field_name = argv[i + 2];
-	      field_index = parse_field_name(field_name, header, &num_fields);
-
-	      if (field_index == -1){
-		fprintf(stderr, "Error: Field '%s' not found in header\n", field_name);
-		return EXIT_FAILURE;
-		  } 
-	    }
+            count_records(filename, has_header);
         } else if (strcmp(argv[i], "-min") == 0) {
-            int conversion = atoi(argv[i + 1]);
-            min_field(conversion, filename);
-        } else if (strcmp(argv[i], "-max") == 0) {
-            int conversion = atoi(argv[i + 1]);
-            max_field(conversion, filename);
-        } else if (strcmp(argv[i], "-mean") == 0) {
-            int conversion = atoi(argv[i + 1]);
-            mean_field(conversion, filename);
+            if (i + 1 < argc && argv[i + 1][0] != '-') { // check next argument and ensure it's not a flag
+                field_name = argv[i + 1];  // use the field name provided after -min
+                
+                if (has_header) { // check if there's a header to parse
+                    field_index = parse_header(filename, field_name, &num_fields);  // get field index using header parsing
+                    if (field_index == -1) {
+                        fprintf(stderr, "Error: Field '%s' not found in header\n", field_name);
+                        return EXIT_FAILURE;
+                    }
+                } else {
+                    // if there's no header, the user should pass an index directly
+                    fprintf(stderr, "Error: Field name provided, but no header exists.\n");
+                    return EXIT_FAILURE;
+                }
+
+                i++;  // skip the field name argument in argument list
+            } else if (i + 1 < argc) {
+                field_index = atoi(argv[i + 1]);  // use field index if no field name is provided
+            }
+            min_field(field_index, filename, has_header);
         } else if (strcmp(argv[i], "-records")==0){
-            int conversion = atoi(argv[i + 1]);
+            field_name = argv[i + 1];
             field_value = argv[i + 2];
-            record_check(filename, conversion, field_value);
-        } else {
-            return EXIT_FAILURE;
+            if(has_header){
+                field_index = parse_header(filename, field_name, &num_fields);
+            } else {
+                field_index = atoi(field_name);
+            }
+            record_check(filename, field_index, field_value);
+
         }
+
     }
     
     return EXIT_SUCCESS;
 }
+
