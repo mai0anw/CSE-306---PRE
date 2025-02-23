@@ -336,7 +336,7 @@ int main(int argc, char *argv[]) {
         } else if (strcmp(argv[i], "-h") == 0) {
 
             if (strcmp(argv[i + 1], "-min") == 0) {
-                field_name = argv[i + 1];  // use the field name provided after -min
+                field_name = argv[i + 2];  // use the field name provided after -min
                 field_index = parse_field_name(field_name, header, &num_fields);
 
                 if (field_index == -1) {
@@ -348,7 +348,7 @@ int main(int argc, char *argv[]) {
             }
 
             else if (strcmp(argv[i + 1], "-max") == 0) {
-                field_name = argv[i + 1];  // use the field name provided after -min
+                field_name = argv[i + 2];  // use the field name provided after -min
                 field_index = parse_field_name(field_name, header, &num_fields);
 
                 if (field_index == -1) {
@@ -360,7 +360,7 @@ int main(int argc, char *argv[]) {
             }
 
             else if (strcmp(argv[i + 1], "-mean") == 0) {
-                field_name = argv[i + 1];  // use the field name provided after -min
+                field_name = argv[i + 2];  // use the field name provided after -min
                 field_index = parse_field_name(field_name, header, &num_fields);
 
                 if (field_index == -1) {
