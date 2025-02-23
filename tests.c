@@ -2,7 +2,7 @@
 #include "csv.h" // Include the header of your csv.c file
 
 
-int runTest_min_field(int field_index, const char *filename, int expected) {
+void runTest_min_field(int field_index, const char *filename, int expected) {
     int actual = min_field(field_index, filename);
     cr_assert_eq(actual, expected, "count_fields(\"%s\") should have produced \"%d\", but returned \"%d\" instead.\n", filename, expected, actual);
 
