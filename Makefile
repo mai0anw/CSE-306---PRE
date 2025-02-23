@@ -34,11 +34,11 @@ $(TARGET): $(OBJS)
 
 # Build tests with Criterion
 tests: $(TEST_OBJS) $(OBJS)
-	$(CC) $(CFLAGS) -I $(INCLUDE_PATH) -L $(LIB_PATH) -o $(TEST_TARGET) $(TEST_OBJS) $(OBJS) -lcriterion
+	$(CC) $(CFLAGS) -I$(INCLUDE_PATH) -L$(LIB_PATH) -o $(TEST_TARGET) $(TEST_OBJS) $(OBJS) -lcriterion
 
 # Compile source files into object files
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -I$(INCLUDE_PATH) -c $< -o $@
 
 # Clean build artifacts
 clean:
