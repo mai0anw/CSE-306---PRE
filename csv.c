@@ -341,7 +341,7 @@ int main(int argc, char *argv[]) {
                     return EXIT_FAILURE;
                 }
                 
-                min_field(filename, field_index);
+                min_field(field_index, filename);
             }
 
             else if (strcmp(argv[i + 1], "-max") == 0) {
@@ -353,7 +353,7 @@ int main(int argc, char *argv[]) {
                     return EXIT_FAILURE;
                 }
                 
-                max_field(filename, field_index);
+                max_field(field_index, filename);
             }
 
             else if (strcmp(argv[i + 1], "-mean") == 0) {
@@ -365,7 +365,7 @@ int main(int argc, char *argv[]) {
                     return EXIT_FAILURE;
                 }
                 
-                mean_field(filename, field_index);
+                mean_field(field_index, filename);
             }
         } else if (strcmp(argv[i], "-min") == 0) {
             min_field(filename, argv[i + 1]);
