@@ -235,11 +235,12 @@ double mean_field(int field_index, const char *filename) {
             if (curr_column == field_index) {
                 // sscanf turns "100" (string) -> 100 (int) and store that into the addy at value
                 // sscanf == 1, means that it successfully converted
+                printf("field: %s\n", processed_field)
                 if (sscanf(processed_field, "%lf", &curr_value) == 1) {
                     // after successful conversion, accumulate both sum and count
                     printf("curr_value: %f\n", curr_value);
                     printf("sum: %f\n", sum);
-                    printf("xount: %d\n", count);
+                    printf("count: %d\n", count);
                     sum += curr_value;  
                     count++;
                 }
