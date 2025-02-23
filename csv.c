@@ -243,7 +243,7 @@ double max_field(int field_index, const char *filename) {
     fclose(file);
 
     // If no valid numeric data was found
-    if (count == 0) {
+    if (valid_int == 0) {
         fprintf(stderr, "Error: No valid numeric data in the specified field\n");
         return EXIT_FAILURE;
     }
