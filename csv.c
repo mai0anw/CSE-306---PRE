@@ -237,8 +237,9 @@ double mean_field(int field_index, const char *filename) {
                 // sscanf == 1, means that it successfully converted
                 if (sscanf(processed_field, "%lf", &curr_value) == 1) {
                     // after successful conversion, accumulate both sum and count
-                    printf("%f\n", sum);
-                    printf("%d\n", count);
+                    printf("curr_value: %f\n", curr_value);
+                    printf("sum: %f\n", sum);
+                    printf("xount: %d\n", count);
                     sum += curr_value;  
                     count++;
                 }
