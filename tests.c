@@ -8,4 +8,4 @@ void runTest_min_field(int field_index, const char *filename, int expected) {
 
 }
 
-Test(PRE, test00) { runTest_min_field("05020004-eng.csv", 8); }
+Test(PRE, test00) { runTest_min_field(0, "05020004-eng.csv", 8); }
