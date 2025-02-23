@@ -52,6 +52,7 @@ char* process_quoted_field(char *field) {
         return new_field;
     }
     // else if not quoted, return as is
+    printf("processed: %s\n", field);
     return field;
 
 }
