@@ -148,8 +148,8 @@ int min_field(int field_index, const char *filename) {
                 // sscanf turns "100" (string) -> 100 (int) and store that into curr_value
                 if (sscanf(processed_field, "%d", &curr_value) == 1) {
                     // after successful conversion, determine the min value
-                    if(curr_value < max_value) {
-                        max_value = curr_value;  // keep track of the min value
+                    if(curr_value < min_value) {
+                        min_value = curr_value;  // keep track of the min value
                     }
                     // valid integers have been found
                     valid_int = 1;
