@@ -49,32 +49,32 @@ char** split_by_commas(const char *input, int *num_fields) {
     bool in_quotes = false;
     
     for (i = 0; input[i] != '\0'; i++) {
-        // Toggle in_quotes when encountering a quote
+        // toggle in_quotes when encountering a quote
         if (input[i] == '"') {
             in_quotes = !in_quotes;
         }
 
-        // Split on comma when not inside quotes
+        // split on comma when not inside quotes
         if (input[i] == ',' && !in_quotes) {
-            // Allocate space for the new field (substring from start to i)
+            // allocate space for the new field (substring from start to i)
             int length = i - (start - input);
             fields[field_count] = malloc(length + 1);
             strncpy(fields[field_count], start, length);
-            fields[field_count][length] = '\0';  // Null-terminate the string
+            fields[field_count][length] = '\0';  // null-terminate the string
             
             field_count++;
             if (field_count >= capacity) {
-                // Resize the fields array if needed
+                // resize the fields array if needed
                 capacity *= 2;
                 fields = realloc(fields, capacity * sizeof(char*));
             }
             
-            // Move start to the next character after the comma
+            // move start to the next character after the comma
             start = input + i + 1;
         }
     }
 
-    // Handle the last field (after the last comma or at the end of the string)
+    // handles the last field (after the last comma or at the end of the string)
     if (start != input + i) {
         fields[field_count] = malloc(i - (start - input) + 1);
         strncpy(fields[field_count], start, i - (start - input));
@@ -104,7 +104,7 @@ char* process_quoted_field(char *field) {
 
 }
 
-//updated MIN
+// updated MIN
 int min_field(int field_index, const char *filename) {
     FILE *file = fopen(filename, "r");  // Open the file for reading
     if (file == NULL) {
@@ -185,7 +185,7 @@ int min_field(int field_index, const char *filename) {
 }
 
 
-//updated MAX
+// updated MAX
 int max_field(int field_index, const char *filename) {
     FILE *file = fopen(filename, "r");  // Open the file for reading
     if (file == NULL) {
@@ -265,7 +265,7 @@ int max_field(int field_index, const char *filename) {
     return max_value;
 }
 
-
+// updated MEAN
 double mean_field(int field_index, const char *filename) {
     FILE *file = fopen(filename, "r");  // Open the file for reading
     if (file == NULL) {
@@ -375,6 +375,8 @@ void parse_header(const char *filename, char header[MAX_FIELDS][MAX_LINE_LENGTH]
     fclose(file); // Close the file
 }
 
+
+// parses the field name to convert it into a index int used in the other min/max/mean/record functions. used when the -h flag is present
 int parse_field_name(const char *field_name, char header[MAX_FIELDS][MAX_LINE_LENGTH], int *num_fields) {
     for (int i = 0; i < *num_fields; i++) {
         if (strcmp(header[i], field_name) == 0) {
@@ -385,81 +387,6 @@ int parse_field_name(const char *field_name, char header[MAX_FIELDS][MAX_LINE_LE
     return -1;  // Field not found
 }
 
-// int main(int argc, char *argv[]) {
-//     if (argc < 1) {
-//         fprintf(stderr, "Usage: %s [-f | -r] <filename>\n", argv[0]);
-//         return EXIT_FAILURE;
-//     }
-
-//     const char *filename = argv[argc - 1];
-
-//     int field_index = -1;
-//     char *field_name = NULL;
-//     char header[MAX_FIELDS][MAX_LINE_LENGTH];
-//     int num_fields = 0;
-
-//     parse_header(filename, header, &num_fields);
-    
-//     for (int i = 1; i < argc - 1; i++) {
-//         if (strcmp(argv[i], "-f") == 0) {
-//             count_fields(filename);
-//         } else if (strcmp(argv[i], "-r") == 0) {
-//             count_records(filename);
-//         } else if (strcmp(argv[i], "-h") == 0) {
-
-//             if (strcmp(argv[i + 1], "-min") == 0) {
-//                 field_name = argv[i + 2];  // use the field name provided after -min
-//                 field_index = parse_field_name(field_name, header, &num_fields);
-
-//                 if (field_index == -1) {
-//                     fprintf(stderr, "Error: Field '%s' not found in header\n", field_name);
-//                     return EXIT_FAILURE;
-//                 }
-                
-//                 min_field(field_index, filename);
-//             }
-
-//             else if (strcmp(argv[i + 1], "-max") == 0) {
-//                 field_name = argv[i + 2];  // use the field name provided after -min
-//                 field_index = parse_field_name(field_name, header, &num_fields);
-
-//                 if (field_index == -1) {
-//                     fprintf(stderr, "Error: Field '%s' not found in header\n", field_name);
-//                     return EXIT_FAILURE;
-//                 }
-                
-//                 max_field(field_index, filename);
-//             }
-
-//             else if (strcmp(argv[i + 1], "-mean") == 0) {
-//                 field_name = argv[i + 2];  // use the field name provided after -min
-//                 field_index = parse_field_name(field_name, header, &num_fields);
-//                 printf("%d\n", field_index);
-
-//                 if (field_index == -1) {
-//                     fprintf(stderr, "Error: Field '%s' not found in header\n", field_name);
-//                     return EXIT_FAILURE;
-//                 }
-                
-//                 mean_field(field_index, filename);
-//             }
-//         } else if (strcmp(argv[i], "-min") == 0) {
-//             int conversion = atoi(argv[i + 1]);
-//             min_field(conversion, filename);
-//         } else if (strcmp(argv[i], "-max") == 0) {
-//             int conversion = atoi(argv[i + 1]);
-//             max_field(conversion, filename);
-//         } else if (strcmp(argv[i], "-mean") == 0) {
-//             int conversion = atoi(argv[i + 1]);
-//             mean_field(conversion, filename);
-//         } else {
-//             return EXIT_FAILURE;
-//         }
-//     }
-
-    
-//     return EXIT_SUCCESS;
-// }
 
 int main(int argc, char *argv[]) {
     if (argc < 2) {
