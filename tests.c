@@ -4,5 +4,3 @@
 #include <stdlib.h>
 
 Test(pre, test00) {cr_assert_eq(true);}
-
-Test(pre, test)
