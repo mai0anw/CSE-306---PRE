@@ -235,7 +235,7 @@ double mean_field(int field_index, const char *filename) {
             if (curr_column == field_index) {
                 // sscanf turns "100" (string) -> 100 (int) and store that into the addy at value
                 // sscanf == 1, means that it successfully converted
-                printf("field: %s\n", processed_field);
+                printf("field: %s\n", field_index);
                 if (sscanf(processed_field, "%lf", &curr_value) == 1) {
                     // after successful conversion, accumulate both sum and count
                     printf("curr_value: %f\n", curr_value);
@@ -308,6 +308,7 @@ void parse_header(const char *filename, char header[MAX_FIELDS][MAX_LINE_LENGTH]
 int parse_field_name(const char *field_name, char header[MAX_FIELDS][MAX_LINE_LENGTH], int *num_fields) {
     for (int i = 0; i < *num_fields; i++) {
         if (strcmp(header[i], field_name) == 0) {
+            printf("%d\n", i);
             return i;  // Return the index of the matching field
         }
     }
