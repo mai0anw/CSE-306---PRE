@@ -9,7 +9,7 @@
 Test(min_field, valid_field) {
     // Test min_field with a valid field
     int result = min_field(0, "05020004-eng.csv");
-    int expected_mean_min_value = 1998;
+    int expected_min_value = 1998;
     cr_assert_eq(result, expected_min_value, "The minimum value should be correct.");
 }
 
