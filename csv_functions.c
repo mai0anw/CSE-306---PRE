@@ -298,7 +298,7 @@ double mean_field(int field_index, const char *filename) {
         // Process each field
         for (int curr_column = 0; curr_column < num_fields; curr_column++) {
             char *field = fields[curr_column];  // Current field
-            printf("%s\n", field);
+            //printf("%s\n", field);
 
             // check for quotes
             char *processed_field = process_quoted_field(field);
@@ -421,7 +421,7 @@ int record_check(const char *filename, int idx, char *value){
 
         for (int curr_column = 0; curr_column < num_fields; curr_column++){
             char *field = fields[curr_column];
-	        printf("%s", field);
+	        printf("%s\n", field);
 
             char *processed_field = process_quoted_field(field);
 	        //printf("%s", processed_field);
