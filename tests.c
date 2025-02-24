@@ -2,6 +2,7 @@
 #include <criterion/redirect.h>
 #include <stdio.h>
 #include <stdlib.h>
+#inclue "code.h"
 
 // void redirect_stdout(void) {
 //     cr_redirect_stdout();
