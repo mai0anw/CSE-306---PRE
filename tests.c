@@ -110,7 +110,7 @@ Test(test_parse_field_name, test08) {
 }
 
 // tests for [2]
-Test(test_parse_field_name, test07) {
+Test(test_parse_field_name, test09) {
     char header[MAX_FIELDS][MAX_LINE_LENGTH];
     int num_fields;
     
