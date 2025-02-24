@@ -2,4 +2,6 @@ DATE, UBIT, DURATION, ACTIVITY & TOOL DESCRIPTION
 2025/02/22, wesleyme, 2 minutes, created wesleyme branch
 2025/02/22, wesleyme, 5 minutes, created wesleyme.csv file & pushed to wesleyme branch
 2025/02/22, wesleyme, 40 minutes, created count_fields count_records & main functions
+2025/02/22, wesleyme, 1 hour, created parse_header and parse_field_name functions
+2025/02/22, wesleyme, 30 minutes, integrated above methods and rewrote main function
 2025/02/22, wesleyme, 2 hours, debugged above methods using gdb
