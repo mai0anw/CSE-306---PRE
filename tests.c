@@ -33,19 +33,19 @@
 
 void runTest_min_field(int field_index, const char *filename, int expected) {
     int actual = min_field(field_index, filename);
-    cr_assert_eq(actual, expected, "count_fields(\"%s\") should have produced \"%d\", but returned \"%d\" instead.\n", filename, expected, actual);
+    cr_assert_eq(actual, expected, "min_field(\"%s\") should have produced \"%d\", but returned \"%d\" instead.\n", filename, expected, actual);
 
 }
 
 void runTest_max_field(int field_index, const char *filename, int expected) {
     int actual = max_field(field_index, filename);
-    cr_assert_eq(actual, expected, "count_fields(\"%s\") should have produced \"%d\", but returned \"%d\" instead.\n", filename, expected, actual);
+    cr_assert_eq(actual, expected, "max_field(\"%s\") should have produced \"%d\", but returned \"%d\" instead.\n", filename, expected, actual);
 
 }
 
 void runTest_mean_field(int field_index, const char *filename, int expected) {
     int actual = mean_field(field_index, filename);
-    cr_assert_eq(actual, expected, "count_fields(\"%s\") should have produced \"%d\", but returned \"%d\" instead.\n", filename, expected, actual);
+    cr_assert_eq(actual, expected, "mean_field(\"%s\") should have produced \"%d\", but returned \"%d\" instead.\n", filename, expected, actual);
 
 }
 
