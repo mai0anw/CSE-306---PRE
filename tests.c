@@ -65,7 +65,7 @@ Test(test_mean, test05) { runTest_mean_field(0, "05020004-eng.csv", 2001.00); }
 Test(test_min_max_mean, test06) {
     runTest_min_field(0, "05020004-eng.csv", 1998);
     runTest_max_field(0, "05020004-eng.csv", 2004);  // Replace 2023 with expected max value
-    runTest_mean_field(0, "05020004-eng.csv", 10.26);  // Replace 7.0 with expected mean value
+    runTest_mean_field(7, "05020004-eng.csv", 10.26);  // Replace 7.0 with expected mean value
 }
 
 
