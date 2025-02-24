@@ -1,7 +1,8 @@
 DATE, UBIT, DURATION, ACTIVITY & TOOL DESCRIPTION
-2025/02/22, louiszen, 5 minutes, added activity log for louiszen
-2025/02/22, louiszen, 1 hour, wrote tests for min/max/mean as well as the parse_field_name in tests.c using Criterion formatting.
-2025/02/22, louiszen, 4 hours, wrote the min_field, max_field, and mean_field helper functions using nano on my terminal on the louiszen branch
-2025/02/22, louiszen, 2 hours, helped make the main function's logic for my functions and how it interacts with the -h flag
-2025/02/22, louiszen, 1 hour, tried to make the makefile in branch making_makefile. However there seems to be an issue with criterion not showing the synthesis report when running make tests and ./tests
-2025/02/23, louiszen, 3 hours, debugged issues with parsing through the csv by using gdb and printf and debugged the main function to work properly with with min/max/mean with and without the h flag in the wesleyme_2 branch (since it had the most updated code of main)
+2025/02/22, louiszen, 5 minutes, "added activity log for louiszen"
+2025/02/22, louiszen, 1 hour, "wrote tests for min/max/mean as well as the parse_field_name in tests.c using Criterion formatting.""
+2025/02/22, louiszen, 4 hours, "wrote the min_field, max_field, and mean_field helper functions using nano on my terminal on the louiszen branch"
+2025/02/22, louiszen, 2 hours, "helped make the main function's logic for my functions and how it interacts with the -h flag"
+2025/02/22, louiszen, 1 hour, "tried to make the makefile in branch making_makefile. However there seems to be an issue with criterion not showing the synthesis report when running make tests and ./tests"
+2025/02/23, louiszen, 3 hours, "debugged issues with parsing through the csv by using gdb and printf and debugged the main function to work properly with with min/max/mean with and without the h flag in the wesleyme_2 branch (since it had the most updated code of main)""
+2025/02/24, louiszen, 1 hour, "corrected the makefile and renamed csv.c -> csv_functions.c and runner.c -> csv.c to match makefile and command line requirements."
