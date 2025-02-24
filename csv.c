@@ -71,7 +71,18 @@ int main(int argc, char *argv[]) {
                 return EXIT_FAILURE;
             }
             mean_field(field_index, filename);
-        }
+        } else if (strcmp(argv[i], "-records") == 0){
+	  if (h_flag){
+	    field_index = parse_field_name(argv[i + 1], header, &num_fields);
+	  } else {
+	    field_index = atoi(argv[i + 1]);
+	  }
+	  if (field_index == -1) {
+	    fprintf(stderr, "Error: Field '%s' not found in header\n", argv[i+1]);
+	    return EXIT_FAILURE;
+	  }
+	  record_check(filename, field_index, argv[i + 2]);
+	}
         // added functionality for the records funtion in the same manner as min/max/mean
     }
 

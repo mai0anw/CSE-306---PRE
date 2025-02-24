@@ -387,7 +387,100 @@ int parse_field_name(const char *field_name, char header[MAX_FIELDS][MAX_LINE_LE
     return -1;  // Field not found
 }
 
+int record_check(const char *filename, int idx, char *value){
 
+    FILE *file = fopen(filename, "r"); //pointer to open and read file
+    if (!file){
+      perror("Error opening file");
+      return EXIT_FAILURE;
+    }
+    char line[MAX_LINE_LENGTH]; //buffer that stores the header row
+    //char *value = val;
+    //int curr_col = 0;
+    int num_fields = 0;
+
+    // skips the header line
+    if (fgets(line, sizeof(line), file) == NULL) {
+        fprintf(stderr, "Error: File is empty or unable to read header\n");
+        fclose(file);
+        return EXIT_FAILURE;
+    }
+
+    while (fgets(line, sizeof(line), file)){
+
+        char **fields = split_by_commas(line, &num_fields);
+
+	//printf("%s", fields[0]);
+	//should split the line by commas when it is not in quotes
+	//char *line_copy[MAX_LINE_LENGTH] = strdup(line);
+      //strcpy(line_copy, line);
+
+
+        for (int curr_column = 0; curr_column < num_fields; curr_column++){
+            char *field = fields[curr_column];
+	    printf("%s", field);
+
+            char *processed_field = process_quoted_field(field);
+	    //printf("%s", processed_field);
+
+            if (curr_column == idx) {
+	      //printf("%d", processed_field[curr_column]);
+	      if (strcmp(processed_field, value) == 0){
+		printf("%s", line);
+	      }
+
+	      
+	      //printf("%s", line);
+
+	      if (processed_field != field){
+		free(processed_field);
+	      }
+
+            }
+
+
+        }
+
+        for (int i = 0; i < num_fields; i++) {
+            free(fields[i]);
+        }
+        free(fields);
+
+        //char *field;
+        //int curr_col = 0;
+
+
+
+        //field = strtok(line, ",\n"); //split each field
+        //test
+        //printf("%s", field);
+
+        //while (field != NULL){
+            //char *process_field = process_quoted_field(field);
+            //processes the field and gets rid of the quotations
+
+            //if (curr_col == idx && strcmp(process_field, val) == 0){
+                //printf("%s", line_copy); //print line if it matches
+            //}
+
+            //if(process_field != field){
+            //free(process_field);
+                //}
+
+            //curr_col ++;
+            //field = strtok(NULL, ",\n");
+
+
+        //}
+
+        //free(line_copy);
+
+    }
+
+    return EXIT_SUCCESS; 
+    fclose(file);
+
+}
 // int main(int argc, char *argv[]) {
 //     if (argc < 2) {
 //         fprintf(stderr, "Usage: %s [-f | -r | -h] <filename>\n", argv[0]);
