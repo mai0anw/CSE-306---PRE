@@ -387,30 +387,33 @@ int parse_field_name(const char *field_name, char header[MAX_FIELDS][MAX_LINE_LE
     return -1;  // Field not found
 }
 
-int record_check(const char *filename, int idx, char *value){
+void record_check(const char *filename, int idx, char *value){
 
     FILE *file = fopen(filename, "r"); //pointer to open and read file
     if (!file){
       perror("Error opening file");
-      return EXIT_FAILURE;
+      exit(EXIT_FAILURE);
     }
     char line[MAX_LINE_LENGTH]; //buffer that stores the header row
     //char *value = val;
     //int curr_col = 0;
     int num_fields = 0;
 
+    //works
+    //printf("%s", value);
+    //printf("%d", idx);
     // skips the header line
     if (fgets(line, sizeof(line), file) == NULL) {
         fprintf(stderr, "Error: File is empty or unable to read header\n");
         fclose(file);
-        return EXIT_FAILURE;
+        exit(EXIT_FAILURE);
     }
 
     while (fgets(line, sizeof(line), file)){
 
         char **fields = split_by_commas(line, &num_fields);
 
-	//printf("%s", fields[0]);
+	//printf("%s", line);
 	//should split the line by commas when it is not in quotes
 	//char *line_copy[MAX_LINE_LENGTH] = strdup(line);
       //strcpy(line_copy, line);
@@ -418,15 +421,24 @@ int record_check(const char *filename, int idx, char *value){
 
         for (int curr_column = 0; curr_column < num_fields; curr_column++){
             char *field = fields[curr_column];
-	    printf("%s", field);
+	    //printf("%s", field);
 
             char *processed_field = process_quoted_field(field);
-	    //printf("%s", processed_field);
+	     
+	    //printf("%d\n", processed_field[7]);
 
             if (curr_column == idx) {
 	      //printf("%d", processed_field[curr_column]);
-	      if (strcmp(processed_field, value) == 0){
-		printf("%s", line);
+	      //if (strcmp(processed_field, value) == 0){
+	      //printf("%s\n", );
+	      //}
+
+	      char curr_value[MAX_LINE_LENGTH];
+
+	      if(sscanf(processed_field, "%s", curr_value) == 1){
+		if(strcmp(curr_value, value) ==0){
+		  printf("%s\n", line);
+		}
 	      }
 
 	      
@@ -477,7 +489,7 @@ int record_check(const char *filename, int idx, char *value){
 
     }
 
-    return EXIT_SUCCESS; 
+    //return; 
     fclose(file);
 
 }
