@@ -14,36 +14,36 @@ CC = gcc
 CFLAGS = -Wall -std=c11 -ggdb
 
 # Object files
-OBJS = csv.o runner.o
+OBJS = csv_functions.o csv.o
 
 # Default target: build everything
-all: csv tests
+all: csv_functions tests
 
-# Compile CSV program
-csv: csv.o
-	$(CC) $(CFLAGS) -o csv csv.o
+# Compile csv_functions program
+csv_functions: csv_functions.o
+	$(CC) $(CFLAGS) -o csv_functions csv_functions.o
 
-# Compile runner
-runner: csv.o runner.o
-	$(CC) $(CFLAGS) -o runner $(OBJS)
+# Compile csv
+csv: csv_functions.o csv.o
+	$(CC) $(CFLAGS) -o csv $(OBJS)
 
-# Compile CSV object file
-csv.o: csv.c csv.h
+# Compile csv_functions object file
+csv_functions.o: csv_functions.c csv_functions.h
+	$(CC) -c $(CFLAGS) csv_functions.c
+
+# Compile csv object file
+csv.o: csv.c csv_functions.h
 	$(CC) -c $(CFLAGS) csv.c
 
-# Compile runner object file
-runner.o: runner.c csv.h
-	$(CC) -c $(CFLAGS) runner.c
-
 # Compile test object file
-tests.o: tests.c csv.h
+tests.o: tests.c csv_functions.h
 	$(CC) -c $(CFLAGS) -I $(INCLUDE_PATH) tests.c
 
 # Compile tests
-tests: csv.o tests.o
-	$(CC) $(CFLAGS) -L $(LIB_PATH) -I $(INCLUDE_PATH) -o tests csv.o tests.o -lcriterion
+tests: csv_functions.o tests.o
+	$(CC) $(CFLAGS) -L $(LIB_PATH) -I $(INCLUDE_PATH) -o tests csv_functions.o tests.o -lcriterion
 
 # Clean up build files
 .PHONY: clean
 clean:
-	rm -rf *~ *.o csv tests runner *.dSYM
+	rm -rf *~ *.o csv_functions tests csv *.dSYM

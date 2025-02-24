@@ -2,7 +2,7 @@
 #include <criterion/redirect.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "csv.h"
+#include "csv_functions.h"
 
 // void redirect_stdout(void) {
 //     cr_redirect_stdout();
