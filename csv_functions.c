@@ -410,7 +410,7 @@ int record_check(const char *filename, int idx, char *value){
 
         char **fields = split_by_commas(line, &num_fields);
 
-	    printf("%s", fields);
+	    //printf("%s", fields);
 	//should split the line by commas when it is not in quotes
 	//char *line_copy[MAX_LINE_LENGTH] = strdup(line);
       //strcpy(line_copy, line);
@@ -418,15 +418,15 @@ int record_check(const char *filename, int idx, char *value){
 
         for (int curr_column = 0; curr_column < num_fields; curr_column++){
             char *field = fields[curr_column];
-	    printf("%s", field);
+	        //printf("%s", field);
 
             char *processed_field = process_quoted_field(field);
-	    //printf("%s", processed_field);
+	        printf("%s", processed_field);
 
             if (curr_column == idx) {
 	      //printf("%d", processed_field[curr_column]);
 	      if (strcmp(processed_field, value) == 0){
-		printf("%s", line);
+		    //printf("%s", line);
 	      }
 
 	      
