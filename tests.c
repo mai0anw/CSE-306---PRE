@@ -45,7 +45,7 @@ void runTest_max_field(int field_index, const char *filename, int expected) {
 
 void runTest_mean_field(int field_index, const char *filename, double expected) {
     double actual = mean_field(field_index, filename);
-    cr_assert_eq(actual, expected, "mean_field(\"%s\") should have produced \"%.2f\", but returned \"%.2f\" instead.\n", filename, expected, actual);
+    cr_assert_float_eq(actual, expected, 0.01, "mean_field(\"%s\") should have produced \"%.2f\", but returned \"%.2f\" instead.\n", filename, expected, actual);
 
 }
 
